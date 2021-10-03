@@ -1,14 +1,19 @@
+import { Id } from "../vo/Id";
+
 export class User {
+  public static build(firstName: string, lastName: string, email: string, password: string): User {
+    return new User(Id.generate(), firstName, lastName, email, password);
+  }
+
   constructor(
-    private _id: number,
+    private _id: string,
     private _firstName: string,
     private _lastName: string,
     private _email: string,
-    private _password: string
-  ) // private _passwordConfirmation: string
-  {}
+    private _password: string // private _passwordConfirmation: string
+  ) {}
 
-  public get id(): number {
+  public get id(): string {
     return this._id;
   }
 
@@ -17,9 +22,9 @@ export class User {
   }
 
   public get lastName(): string {
-    return this._lastName
+    return this._lastName;
   }
-  
+
   public get fullName(): string {
     return `${this._firstName} ${this._lastName}`;
   }
