@@ -2,10 +2,7 @@ import { Id } from '../vo/Id';
 
 export class User {
   public static build(firstName: string, lastName: string, email: string, password: string): User {
-    const id = Id.generate();
-    console.log('user build id', id);
-
-    return new User(id, firstName, lastName, email, password);
+    return new User(Id.generate(), firstName, lastName, email, password);
   }
 
   constructor(

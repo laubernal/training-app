@@ -1,0 +1,16 @@
+[
+  {
+    "id": "d3a732d5-8fc1-40f2-b2fe-76bea5fea403",
+    "firstName": "Laura",
+    "lastName": "Bernal",
+    "email": "test@gmail.com",
+    "password": "password"
+  },
+  {
+    "id": "70cf3615-c4dd-4273-affe-6b9a1063ae02",
+    "firstName": "Adri",
+    "lastName": "Claret",
+    "email": "test2@gmail.com",
+    "password": "password"
+  }
+]
