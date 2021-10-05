@@ -12,7 +12,7 @@ router.post('/create/user', (req: Request, res: Response) => {
 
   try {
     const userCheck = userRepository.getOneBy('email', email);
-
+ 
     if (userCheck) {
       res.send('The user already exists');
       return;
