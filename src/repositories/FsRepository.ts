@@ -5,7 +5,7 @@ import { DATA_DIR } from '../constants';
 import { IReader } from '../interfaces/IReader';
 import { IMapper } from '../mappers/IMapper';
 
-type ObjectDefinition = { [key: string]: string };
+type ObjectDefinition = { [key: string]: any };
 
 export abstract class FsRepository<T, K extends ObjectDefinition> {
   protected abstract mapper: IMapper<T, K>;
@@ -26,14 +26,14 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
     );
   }
 
-  public getOneBy(propName: keyof K, value: string): K {
+  public getOneBy(propName: keyof K, value: string): K | undefined {
     const item = this.reader.data.find((item: T) => {
       const domainItem = this.mapper.toDomain(item);
       return domainItem[propName] === value;
     });
 
     if (!item) {
-      throw new Error('Item not found');
+      return undefined;
     }
 
     return this.mapper.toDomain(item);

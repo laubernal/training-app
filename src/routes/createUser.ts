@@ -10,9 +10,23 @@ const userRepository = new UserRepository();
 router.post('/create/user', (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
 
-  const newUser = User.build(firstName, lastName, email, password);
+  try {
+    const userCheck = userRepository.getOneBy('email', email);
 
-  userRepository.create(newUser);
+    if (userCheck) {
+      res.send('The user already exists');
+      return;
+    }
+
+    const newUser = User.build(firstName, lastName, email, password);
+
+    userRepository.create(newUser);
+
+    res.send('User created');
+  } catch (err) {
+    console.log(err);
+    res.send({ msg: 'Error occured', error: err });
+  }
 });
 
 export { router as createUser };
