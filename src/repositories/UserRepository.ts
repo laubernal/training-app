@@ -11,4 +11,10 @@ export class UserRepository extends FsRepository<IUser, User> {
   constructor() {
     super(new JsonFileReader(USERS_JSON));
   }
+
+  public comparePasswords(password: string, passwordConfirmation: string) {
+    // The password saved in the DB has to be hashed.salt
+    // Create a salt using the scryptSync method of crypto module from node
+    // Return the hashed password: string
+  }
 }
