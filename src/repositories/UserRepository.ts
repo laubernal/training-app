@@ -1,3 +1,5 @@
+import { randomBytes, scryptSync } from 'crypto';
+
 import { USERS_JSON } from '../constants';
 import { User } from '../entities/User';
 import { IUser } from '../interfaces/IUser';
@@ -12,9 +14,25 @@ export class UserRepository extends FsRepository<IUser, User> {
     super(new JsonFileReader(USERS_JSON));
   }
 
-  public comparePasswords(password: string, passwordConfirmation: string) {
-    // The password saved in the DB has to be hashed.salt
-    // Create a salt using the scryptSync method of crypto module from node
-    // Return the hashed password: string
+  public create(user: User): void {
+    const newUser = this.mapper.toData(user);
+
+    const salt = randomBytes(8).toString('hex');
+    const buf = scryptSync(newUser.password, salt, 64);
+
+    newUser.password = `${buf.toString('hex')}.${salt}`;
+    console.log(newUser);
+    
+
+    this.readerData.push(newUser);
+    this.save();
+  }
+
+  public comparePasswords(saved: string, supplied: string): boolean {
+    const [hashed, salt] = saved.split('.');
+
+    const suppliedHashedBuf = scryptSync(supplied, salt, 64);
+
+    return hashed === suppliedHashedBuf.toString('hex');
   }
 }
