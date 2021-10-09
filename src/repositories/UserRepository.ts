@@ -1,4 +1,4 @@
-import { randomBytes, scryptSync } from 'crypto';
+import { scryptSync } from 'crypto';
 
 import { USERS_JSON } from '../constants';
 import { User } from '../entities/User';
@@ -14,20 +14,7 @@ export class UserRepository extends FsRepository<IUser, User> {
     super(new JsonFileReader(USERS_JSON));
   }
 
-  public create(user: User): void {
-    const newUser = this.mapper.toData(user);
-
-    const salt = randomBytes(8).toString('hex');
-    const buf = scryptSync(newUser.password, salt, 64);
-
-    newUser.password = `${buf.toString('hex')}.${salt}`;
-    console.log(newUser);
-    
-
-    this.readerData.push(newUser);
-    this.save();
-  }
-
+  // This is a use case
   public comparePasswords(saved: string, supplied: string): boolean {
     const [hashed, salt] = saved.split('.');
 

@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+import { randomBytes, scryptSync } from 'crypto';
 
 import { User } from '../entities/User';
 import { UserRepository } from '../repositories/UserRepository';
@@ -7,7 +8,7 @@ const router: Router = express.Router();
 
 const userRepository = new UserRepository();
 
-router.post('/create/user', (req: Request, res: Response) => {
+router.post('/user', (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (!(firstName && lastName && email && password)) {
@@ -23,7 +24,7 @@ router.post('/create/user', (req: Request, res: Response) => {
       return;
     }
 
-    const newUser = User.build(firstName, lastName, email, password);
+    const newUser = User.build(firstName, lastName, email, hashPassword(password));
 
     userRepository.create(newUser);
 
@@ -34,4 +35,11 @@ router.post('/create/user', (req: Request, res: Response) => {
   }
 });
 
-export { router as createUser };
+function hashPassword(password: string): string {
+  const salt = randomBytes(8).toString('hex');
+  const buf = scryptSync(password, salt, 64);
+
+  return `${buf.toString('hex')}.${salt}`;
+}
+
+export { router as user };

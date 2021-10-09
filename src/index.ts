@@ -1,17 +1,13 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application } from 'express';
 
-import { createUser } from './routes/createUser';
+import { user } from './routes/user';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(createUser);
-
-app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello');
-});
+app.use(user);
 
 try {
   app.listen(port, () => {

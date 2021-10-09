@@ -12,10 +12,6 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
 
   constructor(private reader: IReader<T>) {}
 
-  protected get readerData(): T[] {
-    return this.reader.data;
-  }
-
   public create(item: K): void {
     const newItem = this.mapper.toData(item);
 
