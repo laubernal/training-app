@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import path from 'path';
 
-import { DATA_DIR } from '../constants';
-import { IReader } from '../interfaces/IReader';
+import { DATA_DIR } from '../../constants';
+import { IReader } from '../../Domain/interfaces/IReader';
 import { IMapper } from '../mappers/IMapper';
 
 type ObjectDefinition = { [key: string]: any };
@@ -12,14 +12,14 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
 
   constructor(private reader: IReader<T>) {}
 
-  public create(item: K): void {
+  public save(item: K): void {
     const newItem = this.mapper.toData(item);
 
     this.reader.data.push(newItem);
-    this.save();
+    this.write();
   }
 
-  public save(): void {
+  private write(): void {
     fs.writeFileSync(
       path.join(DATA_DIR, this.reader.filename),
       JSON.stringify(this.reader.data, null, 2)

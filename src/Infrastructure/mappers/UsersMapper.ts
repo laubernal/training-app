@@ -1,5 +1,5 @@
-import { User } from "../entities/User";
-import { IUser } from "../interfaces/IUser";
+import { User } from "../../Domain/entities/User";
+import { IUser } from "../../Domain/interfaces/IUser";
 import { IMapper } from "./IMapper";
 
 export class UsersMapper implements IMapper<IUser, User> {

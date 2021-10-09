@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 
-import { user } from './routes/user';
+import { user } from './Infrastructure/routes/userController';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
