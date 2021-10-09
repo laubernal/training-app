@@ -4,6 +4,7 @@ import { randomBytes, scryptSync } from 'crypto';
 import { User } from '../../Domain/entities/User';
 import { UserRepository } from '../repositories/UserRepository';
 import { Password } from '../../Domain/vo/Password';
+import { Email } from '../../Domain/vo/Email';
 
 const router: Router = express.Router();
 
@@ -27,6 +28,13 @@ router.post('/user', (req: Request, res: Response) => {
     // Use case
     if (password !== passwordConfirmation) {
       res.send('Passwords must match');
+      return;
+    }
+
+    const emailValidation = new Email(email).validate();
+
+    if (emailValidation === false) {
+      res.send('Email is not correct');
       return;
     }
 
