@@ -1,12 +1,18 @@
 export class Password {
-  constructor(private password: string) {}
+  constructor(private password: string) {
+    this.validate();
+  }
 
-  public validate(): string {
-    let passwordValidation = this.password.trim();
+  public get value(): string {
+    return this.password;
+  }
 
-    if (passwordValidation.length < 8) {
+  private validate(): string {
+    this.password = this.password.trim();
+
+    if (this.password.length < 8) {
       throw new Error('Password length must be greater than 8');
     }
-    return passwordValidation;
+    return this.password;
   }
 }

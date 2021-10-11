@@ -31,17 +31,17 @@ router.post('/user', (req: Request, res: Response) => {
       return;
     }
 
-    const emailValidation = new Email(email).validate();
-    const passwordValidation = new Password(password).validate();
+    const emailValidated = new Email(email).value;
+    const passwordValidated = new Password(password).value;
 
-    const newUser = User.build(firstName, lastName, emailValidation, hashPassword(passwordValidation));
+    const newUser = User.build(firstName, lastName, emailValidated, hashPassword(passwordValidated));
 
     userRepository.save(newUser);
 
     res.send('User created');
-  } catch (error) {
-    console.log(error);
-    res.send({ msg: 'Error occured', error: error });
+  } catch (err: any) {
+    console.log(err);
+    res.send({ msg: 'Error occured', error: err.message });
   }
 });
 

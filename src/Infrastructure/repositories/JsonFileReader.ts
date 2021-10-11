@@ -13,7 +13,7 @@ export class JsonFileReader<T> implements IReader<T> {
   }
 
   // Method to read the JSON and parse it, and to check if it exists or not
-  public read() {
+  public read(): void {
     if (!this._filename) {
       throw new Error('A filename is needed');
     }
