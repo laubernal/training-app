@@ -1,7 +1,9 @@
 import { randomBytes, scryptSync } from 'crypto';
+import { VO } from './VO';
 
-export class Password {
+export class Password extends VO {
   constructor(private password: string) {
+    super();
     this.validate();
     this.password = this.hashPassword(this.password);
   }
@@ -12,6 +14,7 @@ export class Password {
 
   private validate(): void {
     this.password = this.password.trim();
+    this.isEmpty(this.password);
 
     if (this.password.length < 8) {
       throw new Error('Password length must be greater than 8');

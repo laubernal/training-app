@@ -1,10 +1,11 @@
 import { Email } from '../vo/Email';
 import { Id } from '../vo/Id';
+import { Name } from '../vo/Name';
 import { Password } from '../vo/Password';
 
 export class User {
-  public static build(firstName: string, lastName: string, email: Email, password: Password): User {
-    return new User(Id.generate(), firstName, lastName, email.value, password.value);
+  public static build(firstName: Name, lastName: Name, email: Email, password: Password): User {
+    return new User(Id.generate(), firstName.value, lastName.value, email.value, password.value);
   }
 
   constructor(

@@ -4,6 +4,7 @@ import { User } from '../../Domain/entities/User';
 import { UserRepository } from '../repositories/UserRepository';
 import { Password } from '../../Domain/vo/Password';
 import { Email } from '../../Domain/vo/Email';
+import { Name } from '../../Domain/vo/Name';
 
 const router: Router = express.Router();
 
@@ -30,7 +31,12 @@ router.post('/user', (req: Request, res: Response) => {
       return;
     }
 
-    const newUser = User.build(firstName, lastName, new Email(email), new Password(password));
+    const newUser = User.build(
+      new Name(firstName),
+      new Name(lastName),
+      new Email(email),
+      new Password(password)
+    );
 
     userRepository.save(newUser);
 
