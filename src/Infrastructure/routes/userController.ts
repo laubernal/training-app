@@ -1,5 +1,4 @@
 import express, { Request, Response, Router } from 'express';
-import { randomBytes, scryptSync } from 'crypto';
 
 import { User } from '../../Domain/entities/User';
 import { UserRepository } from '../repositories/UserRepository';
@@ -31,10 +30,7 @@ router.post('/user', (req: Request, res: Response) => {
       return;
     }
 
-    const emailValidated = new Email(email).value;
-    const passwordValidated = new Password(password).value;
-
-    const newUser = User.build(firstName, lastName, emailValidated, hashPassword(passwordValidated));
+    const newUser = User.build(firstName, lastName, new Email(email), new Password(password));
 
     userRepository.save(newUser);
 
@@ -44,12 +40,5 @@ router.post('/user', (req: Request, res: Response) => {
     res.send({ msg: 'Error occured', error: err.message });
   }
 });
-
-function hashPassword(password: string): string {
-  const salt = randomBytes(8).toString('hex');
-  const buf = scryptSync(password, salt, 64);
-
-  return `${buf.toString('hex')}.${salt}`;
-}
 
 export { router as user };

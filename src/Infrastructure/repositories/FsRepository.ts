@@ -5,7 +5,7 @@ import { DATA_DIR } from '../../constants';
 import { IReader } from '../../Domain/interfaces/IReader';
 import { IMapper } from '../mappers/IMapper';
 
-type ObjectDefinition = { [key: string]: any };
+export type ObjectDefinition = { [key: string]: any };
 
 export abstract class FsRepository<T, K extends ObjectDefinition> {
   protected abstract mapper: IMapper<T, K>;
