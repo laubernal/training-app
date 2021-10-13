@@ -1,5 +1,12 @@
 import { randomBytes, scryptSync } from 'crypto';
+
 import { VO } from './VO';
+import { ObjectDefinition } from '../../Infrastructure/repositories/FsRepository';
+
+const upperCaseRegex = /^[A-Z]$/;
+const lowerCaseRegex = /^[a-z]$/;
+const numberRegex = /^[0-9]$/;
+const symbolRegex = /^[-#!$@%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
 
 export class Password extends VO {
   constructor(private password: string) {
@@ -26,5 +33,39 @@ export class Password extends VO {
     const buf = scryptSync(password, salt, 64);
 
     return `${buf.toString('hex')}.${salt}`;
+  }
+
+  private countCharacters(password: string): Object {
+    let count: ObjectDefinition = {};
+    password.split('').forEach((character: string) => {
+      let currentValue = count[character];
+
+      if (currentValue) {
+        count[character] += 1;
+      } else {
+        count[character] = 1;
+      }
+    });
+    return count;
+  }
+
+  private analyzePassword(password: string): Object {
+    let characterMap: ObjectDefinition = this.countCharacters(password);
+    let analysis = {
+      length: characterMap,
+      uniqueCharacters: Object.keys(characterMap).length,
+      upperCaseCount: 0,
+      lowerCaseCount: 0,
+      numberCount: 0,
+      symbolCount: 0
+    };
+
+    Object.keys(characterMap).forEach((character: string) =>{
+      if (upperCaseRegex.test(character)) {
+        analysis.upperCaseCount += characterMap[character];
+      }
+    });
+    
+    return analysis;
   }
 }
