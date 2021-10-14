@@ -2,11 +2,7 @@ import { randomBytes, scryptSync } from 'crypto';
 
 import { VO } from './VO';
 import { ObjectDefinition } from '../../Infrastructure/repositories/FsRepository';
-
-const upperCaseRegex = /^[A-Z]$/;
-const lowerCaseRegex = /^[a-z]$/;
-const numberRegex = /^[0-9]$/;
-const symbolRegex = /^[-#!$@%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
+import { LOWER_CASE_REGEX, NUMBER_REGEX, SYMBOL_REGEX, UPPER_CASE_REGEX } from '../../constants';
 
 const defaultOptions: ObjectDefinition = {
   minLength: 8,
@@ -76,16 +72,16 @@ export class Password extends VO {
     };
 
     Object.keys(characterMap).forEach((character: string) => {
-      if (upperCaseRegex.test(character)) {
+      if (UPPER_CASE_REGEX.test(character)) {
         analysis.upperCaseCount += characterMap[character];
       }
-      if (lowerCaseRegex.test(character)) {
-        analysis.lowerCaseCount += characterMap[character];        
+      if (LOWER_CASE_REGEX.test(character)) {
+        analysis.lowerCaseCount += characterMap[character];
       }
-      if (numberRegex.test(character)) {
+      if (NUMBER_REGEX.test(character)) {
         analysis.numberCount += characterMap[character];
       }
-      if (symbolRegex.test(character)) {
+      if (SYMBOL_REGEX.test(character)) {
         analysis.symbolCount += characterMap[character];
       }
     });
