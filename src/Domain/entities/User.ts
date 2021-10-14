@@ -13,7 +13,7 @@ export class User {
     private _firstName: string,
     private _lastName: string,
     private _email: string,
-    private _password: string // private _passwordConfirmation: string
+    private _password: string
   ) {}
 
   public get id(): string {
@@ -39,8 +39,4 @@ export class User {
   public get password(): string {
     return this._password;
   }
-
-  // public get passwordConfirmation(): string {
-  //   return this._passwordConfirmation;
-  // }
 }
