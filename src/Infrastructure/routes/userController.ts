@@ -1,10 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 
-import { User } from '../../Domain/entities/User';
 import { UserRepository } from '../repositories/UserRepository';
-import { Password } from '../../Domain/vo/Password';
-import { Email } from '../../Domain/vo/Email';
-import { Name } from '../../Domain/vo/Name';
+import { SignUpUseCase } from '../../Application/UseCases/SignUpUseCase';
 
 const router: Router = express.Router();
 
@@ -13,35 +10,8 @@ const userRepository = new UserRepository();
 router.post('/user', (req: Request, res: Response) => {
   const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
-  if (!(firstName || lastName || email || password || passwordConfirmation)) {
-    res.send('Some data is missing');
-    return;
-  }
-
   try {
-    const emailValidated = new Email(email);
-    const userExists = userRepository.getOneBy('email', emailValidated.value);
-
-    if (userExists) {
-      res.send('This user already exists');
-      return;
-    }
-
-    // Use case
-    if (password !== passwordConfirmation) {
-      res.send('Passwords must match');
-      return;
-    }
-
-    const newUser = User.build(
-      new Name(firstName),
-      new Name(lastName),
-      emailValidated,
-      new Password(password)
-    );
-
-    userRepository.save(newUser);
-
+    new SignUpUseCase(userRepository, firstName, lastName, email, password, passwordConfirmation);
     res.send('User created');
   } catch (err: any) {
     console.log(err);
