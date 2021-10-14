@@ -40,7 +40,6 @@ export class Password extends VO {
     if (strength < 40) {
       throw new Error('Password must be stronger');
     }
-    console.log(strength);
   }
 
   private hashPassword(password: string): string {

@@ -12,19 +12,5 @@
     "lastName": "Bernal",
     "email": "test@gmail.com",
     "password": "99df56c7fa5482a9e5bf872780f5f873cd8a2f8f1c8f12a08bfd0bd291ee42afc248e324170bf142326f787a0e6fd0d392ab05de4ebb4f7087876fb5d0dbbb3b.b837886e30934df2"
-  },
-  {
-    "id": "c6bea503-c5b4-47a9-b99b-1b8355bcc257",
-    "firstName": "Laura",
-    "lastName": "Bernal",
-    "email": "test3@gmail.com",
-    "password": "c67339816487eb8a5821c5051b1eb64df7e82e5e72a4a976b884d91b77d4e88aa81caa3c9bee3bfae15aa796d5dea9dbe38e110aa7dbd0075f427e63433ed9bb.7e47fd24dd125c24"
-  },
-  {
-    "id": "9f458b00-5039-4a33-8457-3b1a9d64b01d",
-    "firstName": "Laura",
-    "lastName": "Bernal",
-    "email": "test3@gmail.com",
-    "password": "6df54a3b387dbf75a46c7ec5622022cf9192f2680a84c963028443620b69d7f266db050c76004b6a5f715b10e716fd7749bd8a6a811602dec2096972a4a4e71d.5c03df015b58f80b"
   }
 ]

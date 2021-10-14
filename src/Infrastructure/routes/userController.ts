@@ -19,12 +19,14 @@ router.post('/user', (req: Request, res: Response) => {
   }
 
   try {
-    const userExists = userRepository.getOneBy('email', email);
+    const emailValidated = new Email(email);
+    const userExists = userRepository.getOneBy('email', emailValidated.value);
 
     if (userExists) {
       res.send('The user already exists');
       return;
     }
+
     // Use case
     if (password !== passwordConfirmation) {
       res.send('Passwords must match');
@@ -34,7 +36,7 @@ router.post('/user', (req: Request, res: Response) => {
     const newUser = User.build(
       new Name(firstName),
       new Name(lastName),
-      new Email(email),
+      emailValidated,
       new Password(password)
     );
 
