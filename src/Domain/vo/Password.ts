@@ -2,7 +2,7 @@ import { randomBytes, scryptSync } from 'crypto';
 
 import { VO } from './VO';
 import { ObjectDefinition } from '../../Infrastructure/repositories/FsRepository';
-import { LOWER_CASE_REGEX, NUMBER_REGEX, SYMBOL_REGEX, UPPER_CASE_REGEX } from '../../constants';
+import { LOWER_CASE_REGEX, MIN_STRENGTH_PASSWORD, NUMBER_REGEX, SYMBOL_REGEX, UPPER_CASE_REGEX } from '../../constants';
 
 const defaultOptions: ObjectDefinition = {
   minLength: 8,
@@ -33,7 +33,7 @@ export class Password extends VO {
     this.password = this.password.trim();
     this.isEmpty(this.password);
     const strength = this.isStrong(this.password);
-    if (strength < 40) {
+    if (strength < MIN_STRENGTH_PASSWORD) {
       throw new Error('Password must be stronger');
     }
   }

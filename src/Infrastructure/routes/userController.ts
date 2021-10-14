@@ -23,7 +23,7 @@ router.post('/user', (req: Request, res: Response) => {
     const userExists = userRepository.getOneBy('email', emailValidated.value);
 
     if (userExists) {
-      res.send('The user already exists');
+      res.send('This user already exists');
       return;
     }
 
