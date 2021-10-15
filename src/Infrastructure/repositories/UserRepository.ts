@@ -14,7 +14,7 @@ export class UserRepository extends FsRepository<IUser, User> {
     super(new JsonFileReader(USERS_JSON));
   }
 
-  // This is a use case
+  // This is a use case for sign in
   public comparePasswords(saved: string, supplied: string): boolean {
     const [hashed, salt] = saved.split('.');
 
