@@ -2,7 +2,12 @@ import { randomBytes, scryptSync } from 'crypto';
 
 import { VO } from './VO';
 import { ObjectDefinition } from '../../Infrastructure/repositories/FsRepository';
-import { LOWER_CASE_REGEX, MIN_STRENGTH_PASSWORD, NUMBER_REGEX, SYMBOL_REGEX, UPPER_CASE_REGEX } from '../../constants';
+import {
+  LOWER_CASE_REGEX,
+  NUMBER_REGEX,
+  SYMBOL_REGEX,
+  UPPER_CASE_REGEX,
+} from '../../constants';
 
 const defaultOptions: ObjectDefinition = {
   minLength: 8,
@@ -33,7 +38,8 @@ export class Password extends VO {
     this.password = this.password.trim();
     this.isEmpty(this.password);
     const strength = this.isStrong(this.password);
-    if (strength < MIN_STRENGTH_PASSWORD) {
+    
+    if (strength === false) {
       throw new Error('Password must be stronger');
     }
   }
@@ -89,41 +95,15 @@ export class Password extends VO {
     return analysis;
   }
 
-  private scorePassword(analysis: ObjectDefinition, scoringOptions: ObjectDefinition): number {
-    let points = 0;
-
-    points = points + analysis.uniqueCharacters * scoringOptions.pointsPerUnique;
-    points += (analysis.length - analysis.uniqueCharacters) * scoringOptions.pointsPerRepeat;
-
-    if (analysis.upperCaseCount > 0) {
-      points += scoringOptions.pointsForContainingUpper;
-    }
-    if (analysis.lowerCaseCount > 0) {
-      points += scoringOptions.pointsForContainingLower;
-    }
-    if (analysis.numberCount > 0) {
-      points += scoringOptions.pointsForContainingNumber;
-    }
-    if (analysis.symbolCount > 0) {
-      points += scoringOptions.pointsForContainingSymbol;
-    }
-
-    return points;
-  }
-
-  private isStrong(password: string): number {
+  private isStrong(password: string): boolean {
     const analysis: ObjectDefinition = this.analyzePassword(password);
 
-    const score = this.scorePassword(analysis, defaultOptions);
-
-    return score;
-
-    // return (
-    //   analysis.length >= defaultOptions.minLength &&
-    //   analysis.lowercaseCount >= defaultOptions.minLowercase &&
-    //   analysis.uppercaseCount >= defaultOptions.minUppercase &&
-    //   analysis.numberCount >= defaultOptions.minNumbers &&
-    //   analysis.symbolCount >= defaultOptions.minSymbols
-    // );
+    return (
+      analysis.length >= defaultOptions.minLength &&
+      analysis.lowerCaseCount >= defaultOptions.minLowercase &&
+      analysis.upperCaseCount >= defaultOptions.minUppercase &&
+      analysis.numberCount >= defaultOptions.minNumbers &&
+      analysis.symbolCount >= defaultOptions.minSymbols
+    );
   }
 }
