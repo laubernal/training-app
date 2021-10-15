@@ -13,9 +13,7 @@ export class SignUpUseCase implements IUseCase<void> {
     private email: string,
     private password: string,
     private passwordConfirmation: string
-  ) {
-    this.execute();
-  }
+  ) {}
 
   public execute(): void {
     if (

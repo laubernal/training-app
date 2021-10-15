@@ -1,5 +1,3 @@
-import { scryptSync } from 'crypto';
-
 import { USERS_JSON } from '../../constants';
 import { User } from '../../Domain/entities/User';
 import { IUser } from '../../Domain/interfaces/IUser';
@@ -14,12 +12,12 @@ export class UserRepository extends FsRepository<IUser, User> {
     super(new JsonFileReader(USERS_JSON));
   }
 
-  // This is a use case for sign in
-  public comparePasswords(saved: string, supplied: string): boolean {
-    const [hashed, salt] = saved.split('.');
+  public getId(email: string): string {
+    const user = this.getOneBy('email', email);
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    const suppliedHashedBuf = scryptSync(supplied, salt, 64);
-
-    return hashed === suppliedHashedBuf.toString('hex');
+    return user.id;
   }
 }
