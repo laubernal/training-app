@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import express, { Request, Response, Router } from 'express';
 
 import { UserRepository } from '../repositories/UserRepository';
@@ -21,12 +22,27 @@ router.post('/signup', (req: Request, res: Response) => {
       passwordConfirmation
     ).execute();
 
-    req.session!.userId = userRepository.getId(email);
+    const id = userRepository.getId(email);
+
+    const userJwt = jwt.sign(
+      {
+        id: id,
+        email: email,
+      },
+      'asdf'
+    );
+
+    req.session = {
+      jwt: userJwt,
+    };
 
     res.send('User created');
   } catch (err: any) {
     console.log(err);
-    res.send({ msg: 'Error occured', error: err.message });
+    res.send({
+      msg: 'Error occured',
+      error: err.message,
+    });
   }
 });
 
@@ -36,18 +52,34 @@ router.post('/signin', (req: Request, res: Response) => {
   try {
     new SignInCase(userRepository, email, password).execute();
 
-    req.session!.userId = userRepository.getId(email);
+    const id = userRepository.getId(email);
 
-    res.send('Logged in');
+    const userJwt = jwt.sign(
+      {
+        id: id,
+        email: email,
+      },
+      'asdf'
+    );
+
+    req.session = {
+      jwt: userJwt,
+    };
+
+    res.status(201).send('Logged in');
+    console.log(userJwt);
   } catch (err: any) {
     console.log(err);
-    res.send({ msg: 'Error occurred', error: err.message });
+    res.send({
+      msg: 'Error occurred',
+      error: err.message,
+    });
   }
 });
 
 router.get('signout', (req: Request, res: Response) => {
   req.session = null;
-  res.send('You are logged out');
+  res.status(200).send('You are logged out');
 });
 
 export { router as user };

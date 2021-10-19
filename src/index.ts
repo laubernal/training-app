@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieSession({ name: 'session', keys: ['askjhf'] }));
+app.use(cookieSession({ name: 'session', signed: false }));
 app.use(user);
 
 try {

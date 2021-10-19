@@ -26,10 +26,6 @@ export class SignInCase implements IUseCase<void> {
     if (this.comparePasswords(userExists.password, this.password) === false) {
       throw new Error('Incorrect password');
     }
-
-    // User exists and password is correct
-    // Create a session for the user
-    console.log(`Create cookie session for the user ${userExists.fullName}`);
   }
 
   // This is a use case for sign in
