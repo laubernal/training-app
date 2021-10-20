@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cookieSession from 'cookie-session';
 
 import { user } from './Infrastructure/routes/userController';
+import { training } from './Infrastructure/routes/trainingController';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({ name: 'session', signed: false }));
 app.use(user);
+app.use(training);
 
 try {
   app.listen(port, () => {
