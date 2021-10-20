@@ -67,7 +67,6 @@ router.post('/signin', (req: Request, res: Response) => {
     };
 
     res.status(201).send('Logged in');
-    console.log(userJwt);
   } catch (err: any) {
     console.log(err);
     res.send({
@@ -77,9 +76,17 @@ router.post('/signin', (req: Request, res: Response) => {
   }
 });
 
-router.get('signout', (req: Request, res: Response) => {
-  req.session = null;
-  res.status(200).send('You are logged out');
+router.get('/signout', (req: Request, res: Response) => {
+  try {
+    req.session = null;
+    res.status(200).send('You are logged out');
+  } catch (err: any) {
+    console.log(err);
+    res.send({
+      msg: 'Error occurred',
+      error: err.message,
+    });
+  }
 });
 
 export { router as user };

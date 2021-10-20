@@ -1,4 +1,5 @@
 export const USERS_JSON = 'users.json';
+export const TRAININGS_JSON = 'trainings.json';
 export const DATA_DIR = 'C:/Users/lau_b/Documents/Laura/Laura-dev/training-app/data';
 
 export const PLUS_ONLY = /\+.*$/;
