@@ -9,7 +9,7 @@ const router: Router = express.Router();
 
 const userRepository = new UserRepository();
 
-router.post('/signup', (req: Request, res: Response) => {
+router.post('/signup', (req: Request, res: Response): void => {
   const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
   try {
@@ -46,7 +46,7 @@ router.post('/signup', (req: Request, res: Response) => {
   }
 });
 
-router.post('/signin', (req: Request, res: Response) => {
+router.post('/signin', (req: Request, res: Response): void => {
   const { email, password } = req.body;
 
   try {
@@ -76,7 +76,7 @@ router.post('/signin', (req: Request, res: Response) => {
   }
 });
 
-router.get('/signout', (req: Request, res: Response) => {
+router.get('/signout', (req: Request, res: Response): void => {
   try {
     req.session = null;
     res.status(200).send('You are logged out');
