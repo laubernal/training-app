@@ -16,11 +16,7 @@ export class SignUpUseCase implements IUseCase<void> {
   ) {}
 
   public execute(): void {
-    if (
-      !(this.firstName || this.lastName || this.email || this.password || this.passwordConfirmation)
-    ) {
-      throw new Error('Some data is missing');
-    }
+    this.checkArgs();
 
     const emailValidated = new Email(this.email);
     const userExists = this.userRepository.getOneBy('email', emailValidated.value);
@@ -41,5 +37,17 @@ export class SignUpUseCase implements IUseCase<void> {
     );
 
     this.userRepository.save(newUser);
+  }
+
+  private checkArgs(): void {
+    if (
+      !this.firstName ||
+      !this.lastName ||
+      !this.email ||
+      !this.password ||
+      !this.passwordConfirmation
+    ) {
+      throw new Error('Some data is missing');
+    }
   }
 }
