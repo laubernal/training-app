@@ -5,14 +5,12 @@ import { DATA_DIR } from '../../constants';
 import { IReader } from '../../Domain/interfaces/IReader';
 
 export class JsonFileReader<T> implements IReader<T> {
-  // Create instance variable to persist the data of the JSON inside it and to be able to manipulate it
   public data!: T[];
 
   constructor(private _filename: string) {
     this.read();
   }
 
-  // Method to read the JSON and parse it, and to check if it exists or not
   public read(): void {
     if (!this._filename) {
       throw new Error('A filename is needed');

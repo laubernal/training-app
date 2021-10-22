@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import path from 'path';
+import { ObjectDefinition } from '../../ObjectDefinition';
 
 import { DATA_DIR } from '../../constants';
 import { IReader } from '../../Domain/interfaces/IReader';
 import { IMapper } from '../mappers/IMapper';
 
-export type ObjectDefinition = { [key: string]: any };
 
 export abstract class FsRepository<T, K extends ObjectDefinition> {
   protected abstract mapper: IMapper<T, K>;
@@ -27,8 +27,12 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
   }
 
   public getOneBy(propName: keyof K, value: string): K | undefined {
+    console.log('get one by');
+
     const item = this.reader.data.find((item: T) => {
       const domainItem = this.mapper.toDomain(item);
+      console.log('domain item', domainItem);
+
       return domainItem[propName] === value;
     });
 
@@ -54,5 +58,5 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
     });
   }
 
-  public update() {}
+  // public update() {}
 }

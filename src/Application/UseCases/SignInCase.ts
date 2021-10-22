@@ -12,11 +12,10 @@ export class SignInCase implements IUseCase<void> {
   ) {}
 
   public execute(): void {
-    if (!(this.email || this.password)) {
-      throw new Error('Some data is missing');
-    }
+    this.checkArgs();
 
     const emailValidated = new Email(this.email);
+
     const userExists = this.userRepository.getOneBy('email', emailValidated.value);
 
     if (!userExists) {
@@ -29,11 +28,19 @@ export class SignInCase implements IUseCase<void> {
   }
 
   // This is a use case for sign in
-  public comparePasswords(saved: string, supplied: string): boolean {
+  private comparePasswords(saved: string, supplied: string): boolean {
     const [hashed, salt] = saved.split('.');
 
     const suppliedHashedBuf = scryptSync(supplied, salt, 64);
+    console.log(hashed);
+    console.log(suppliedHashedBuf.toString('hex'));
 
     return hashed === suppliedHashedBuf.toString('hex');
+  }
+
+  private checkArgs(): void {
+    if (!this.email || !this.password) {
+      throw new Error('Some data is missing');
+    }
   }
 }
