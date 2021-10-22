@@ -12,17 +12,19 @@ router.post('/training', (req: Request, res: Response) => {
   try {
     const { date, exercise } = req.body;
 
-    const exercises = exercise.map((exercise: any) => {
-      const series = exercise.map((serie: any) => {
-        return new Serie(serie.reps, serie.weight, serie.seriesCount);
+    const exercises = exercise.map((exerciseMap: any): Exercise => {
+      const series = exerciseMap.series.map((series: any): Serie => {
+        return new Serie(series.reps, series.weight, series.seriesCount);
       });
       return new Exercise(exercise.exerciseName, series);
     });
 
-    Training.build(date, exercises);
+    const newTraining = Training.build(date, exercises);
+
+    trainingRepository.save(newTraining);
   } catch (err: any) {
     console.log(err);
-    res.send({ msg: 'Error occurred', error: err });
+    res.send({ msg: 'Error occurred', error: err.message });
   }
 });
 

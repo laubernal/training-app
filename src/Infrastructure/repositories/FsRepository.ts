@@ -6,7 +6,6 @@ import { DATA_DIR } from '../../constants';
 import { IReader } from '../../Domain/interfaces/IReader';
 import { IMapper } from '../mappers/IMapper';
 
-
 export abstract class FsRepository<T, K extends ObjectDefinition> {
   protected abstract mapper: IMapper<T, K>;
 
@@ -46,6 +45,7 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
   public getAllBy(propName: keyof K, value: string): K[] {
     const items = this.reader.data.filter((item: T) => {
       const domainItem = this.mapper.toDomain(item);
+      console.log('get all by domain item', item);
       return domainItem[propName] === value;
     });
 
@@ -54,6 +54,8 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
     }
 
     return items.map((item: T) => {
+      console.log('item returned from get all', item);
+
       return this.mapper.toDomain(item);
     });
   }

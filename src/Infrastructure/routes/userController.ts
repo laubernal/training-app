@@ -9,11 +9,11 @@ const router: Router = express.Router();
 
 const userRepository = new UserRepository();
 
-router.post('/signup', async (req: Request, res: Response): Promise<void> => {
+router.post('/signup', (req: Request, res: Response): void => {
   const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
   try {
-    await new SignUpUseCase(
+    new SignUpUseCase(
       userRepository,
       firstName,
       lastName,
@@ -22,10 +22,10 @@ router.post('/signup', async (req: Request, res: Response): Promise<void> => {
       passwordConfirmation
     ).execute();
 
-    console.log('sign up case executed');    
+    console.log('sign up case executed');
 
     const id = userRepository.getId(email);
-    console.log('id', id);    
+    console.log('id', id);
 
     const userJwt = jwt.sign(
       {
