@@ -10,13 +10,14 @@ const trainingRepository = new TrainingRepository();
 
 router.post('/training', (req: Request, res: Response) => {
   try {
-    const { date, exercise } = req.body;
+    // Check if exists a jwt 
+    const { date, exercise } = req.body as {date: string, exercise: any[]};
 
     const exercises = exercise.map((exerciseMap: any): Exercise => {
-      const series = exerciseMap.series.map((series: any): Serie => {
-        return new Serie(series.reps, series.weight, series.seriesCount);
+      const series= exerciseMap.series.map((serie: any): Serie => {
+        return new Serie(serie.reps, serie.weight, serie.seriesCount);
       });
-      return new Exercise(exercise.exerciseName, series);
+      return new Exercise(exerciseMap.exerciseName, series);
     });
 
     const newTraining = Training.build(date, exercises);

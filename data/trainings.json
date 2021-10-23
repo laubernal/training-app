@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "id": "66a2d4ce-1bea-4df5-bf2c-234ed4588624",
+    "date": "20/10/2021",
+    "exercises": [
+      {
+        "exerciseName": "Dominadas",
+        "series": [
+          {
+            "reps": 10,
+            "weight": 10,
+            "seriesCount": 1
+          },
+          {
+            "reps": 5,
+            "weight": 10,
+            "seriesCount": 1
+          }
+        ]
+      },
+      {
+        "exerciseName": "Jalón",
+        "series": [
+          {
+            "reps": 8,
+            "weight": 10,
+            "seriesCount": 1
+          }
+        ]
+      }
+    ]
+  }
+]
