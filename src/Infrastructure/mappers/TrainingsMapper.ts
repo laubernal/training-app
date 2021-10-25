@@ -22,9 +22,6 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
   }
 
   public toData(training: Training): TrainingModel {
-    console.log('enter toData method');
-    console.log('exercises', training.exercises);
-
     const exercises = training.exercises.map((exerciseMap: any) => {
       const series = exerciseMap.series.map((serie: any) => {
         return { reps: serie.reps, weight: serie.weight, seriesCount: serie.seriesCount };

@@ -10,7 +10,7 @@ const trainingRepository = new TrainingRepository();
 
 router.post('/training', (req: Request, res: Response) => {
   try {
-    // Check if exists a jwt
+    // TO DO - Check if exists a jwt
     const { date, exercise } = req.body as { date: string; exercise: any[] };
 
     const exercises = exercise.map((exerciseMap: any): Exercise => {
@@ -20,11 +20,18 @@ router.post('/training', (req: Request, res: Response) => {
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    console.log(date);    
+    // TESTS ---------------------------------------
 
-    const dateTest = new Date(2021, 10, 25);
+    const month = 10;
+    const dateTest = new Date(2021, month - 1, 25 + 1);
 
-    console.log(`${dateTest.getDate()}/${dateTest.getMonth()}/${dateTest.getFullYear()}`);
+    console.log('dateTest', dateTest);
+
+    console.log(
+      `with methods ${dateTest.getDate() - 1}/${dateTest.getMonth() + 1}/${dateTest.getFullYear()}`
+    );
+
+    // TESTS ---------------------------------------
 
     const newTraining = Training.build(date, exercises);
 

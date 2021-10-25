@@ -1,6 +1,6 @@
 export interface TrainingModel {
   id: string;
-  date: string;
+  date: Date;
   exercises: {
     exerciseName: string;
     series: {
