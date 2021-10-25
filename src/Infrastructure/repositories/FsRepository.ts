@@ -12,12 +12,9 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
   constructor(private reader: IReader<T>) {}
 
   public save(item: K): void {
-    console.log('enter save method');
     const newItem = this.mapper.toData(item);
-    console.log('new item', newItem);
 
     this.reader.data.push(newItem);
-    console.log('push item');
     this.write();
   }
 
