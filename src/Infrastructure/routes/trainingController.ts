@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+
 import { Exercise } from '../../Domain/entities/Exercise';
 import { Serie } from '../../Domain/entities/Serie';
 import { Training } from '../../Domain/entities/Training';
@@ -20,22 +21,10 @@ router.post('/training', (req: Request, res: Response) => {
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    // TESTS ---------------------------------------
-
-    const month = 10;
-    const dateTest = new Date(2021, month - 1, 25 + 1);
-
-    console.log('dateTest', dateTest);
-
-    console.log(
-      `with methods ${dateTest.getDate() - 1}/${dateTest.getMonth() + 1}/${dateTest.getFullYear()}`
-    );
-
-    // TESTS ---------------------------------------
-
     const newTraining = Training.build(date, exercises);
 
     trainingRepository.save(newTraining);
+    res.send(newTraining);
   } catch (err: any) {
     console.log(err);
     res.send({ msg: 'Error occurred', error: err.message });

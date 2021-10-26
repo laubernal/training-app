@@ -1,33 +1,27 @@
 import { Exercise } from './Exercise';
 import { Id } from '../vo/Id';
+import { TrainingDate } from '../vo/TrainingDate';
 
 export class Training {
   public static build(date: string, exercises: Exercise[]): Training {
-    const newDate = date.split('/');
     return new Training(
       Id.generate(),
-      new Date(parseInt(newDate[2]), parseInt(newDate[1]) - 1, parseInt(newDate[0])),
+      TrainingDate.generate(date),
       exercises
     );
   }
 
-  constructor(private _id: string, private _date: Date, private _exercises: Exercise[]) {}
+  constructor(private _id: string, private _date: string, private _exercises: Exercise[]) {}
 
   public get id(): string {
     return this._id;
   }
 
-  public get date(): Date {
+  public get date(): string {
     return this._date;
   }
 
   public get exercises(): Exercise[] {
     return this._exercises;
-  }
-
-  private createDate(date: string) {
-    const newDate = date.split('/');
-
-    return new Date(parseInt(newDate[2]), parseInt(newDate[1]), parseInt(newDate[0])).toString();
   }
 }
