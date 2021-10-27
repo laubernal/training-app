@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { DATE_FORMAT } from '../../constants';
 
 export class TrainingDate {
   public static generate(date: string): string {
     dayjs.extend(customParseFormat);
-    const trainingDate = dayjs(date, 'DD-MM-YYYY', true);
+    const trainingDate = dayjs(date, DATE_FORMAT, true);
     console.log(date);
     console.log(trainingDate);
 
@@ -14,6 +15,8 @@ export class TrainingDate {
       throw new Error('Invalid date');
     }
 
-    return trainingDate.format('DD-MM-YYYY');
+    return trainingDate.format(DATE_FORMAT);
   }
+
+  private validateDate() {}
 }
