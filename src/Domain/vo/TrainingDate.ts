@@ -1,42 +1,33 @@
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { DATE_FORMAT } from '../../constants';
-
 export class TrainingDate {
   public static generate(date: string): string {
-    dayjs.extend(customParseFormat);
-    const trainingDate = dayjs(date, DATE_FORMAT);
-    console.log(date);
-    console.log(trainingDate.get('month'));
+    if (this.validateDate(date) === false) {
+      throw new Error('Invalid date');
+    }
 
-    console.log(trainingDate.isValid());
-    console.log('my validation', this.validateDate(trainingDate.toString()));
-
-    // if (trainingDate.isValid() === false) {
-    //   throw new Error('Invalid date');
-    // }
-
-    return trainingDate.format(DATE_FORMAT);
+    return date;
   }
 
   private static validateDate(date: string): boolean {
-    const monthlyDays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    console.log(date);
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const datepattern = /^(\d{2})([\./])(\d{2})([\./])(\d{4})$/;
+
+    if (!datepattern.test(date)) {
+      return false;
+    }
 
     const splitDate = date.split('/');
 
-    const dateDay = parseInt(splitDate[0]);
-    const dateMonth = parseInt(splitDate[1]);
-    const dateYear = parseInt(splitDate[3]);
-    console.log('days', dateDay);
+    const day = parseInt(splitDate[0]);
+    const month = parseInt(splitDate[1]);
+    const year = parseInt(splitDate[2]);
 
-    if (this.isLeapYear(dateYear)) {
-      monthlyDays[2] = 29;
+    if (this.isLeapYear(year)) {
+      daysInMonth[2] = 29;
     }
-    if (dateDay === 0 || dateDay > monthlyDays[dateMonth]) {
+    if (day === 0 || day > daysInMonth[month - 1]) {
       return false;
     }
-    if (dateMonth <= 0 || dateMonth > 12) {
+    if (month <= 0 || month > 12) {
       return false;
     }
 
