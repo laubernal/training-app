@@ -3,6 +3,7 @@ import express, { Request, Response, Router } from 'express';
 import { Exercise } from '../../Domain/entities/Exercise';
 import { Serie } from '../../Domain/entities/Serie';
 import { Training } from '../../Domain/entities/Training';
+import { TrainingDate } from '../../Domain/vo/TrainingDate';
 import { TrainingRepository } from '../repositories/TrainingRepository';
 
 const router: Router = express.Router();
@@ -21,7 +22,7 @@ router.post('/training', (req: Request, res: Response) => {
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    const newTraining = Training.build(date, exercises);
+    const newTraining = Training.build(TrainingDate.generate(date), exercises);
 
     trainingRepository.save(newTraining);
     res.send(newTraining);
