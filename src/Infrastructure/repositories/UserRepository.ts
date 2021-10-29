@@ -13,14 +13,11 @@ export class UserRepository extends FsRepository<IUser, User> {
   }
 
   public getId(email: string): string {
-    console.log('get id');
-
     const user = this.getOneBy('email', email);
 
     if (!user) {
       throw new Error('User not found');
     }
-    console.log('id obtained');
 
     return user.id;
   }

@@ -32,8 +32,6 @@ export class SignInCase implements IUseCase<void> {
     const [hashed, salt] = saved.split('.');
 
     const suppliedHashedBuf = scryptSync(supplied, salt, 64);
-    console.log(hashed);
-    console.log(suppliedHashedBuf.toString('hex'));
 
     return hashed === suppliedHashedBuf.toString('hex');
   }

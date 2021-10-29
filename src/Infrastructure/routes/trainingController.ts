@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { Exercise } from '../../Domain/entities/Exercise';
 import { Serie } from '../../Domain/entities/Serie';
@@ -12,7 +13,15 @@ const trainingRepository = new TrainingRepository();
 
 router.post('/training', (req: Request, res: Response) => {
   try {
-    // TO DO - Check if exists a jwt
+    // TO DO - Check if exists a jwt ------------------------
+    if (!req.session || !req.session.jwt) {
+      throw new Error('Invalid session - training');
+    }
+    const verifiedToken = jwt.verify(req.session.jwt, 'asdf');
+    console.log('verified token', verifiedToken);
+
+    // ------------------------------------------------------
+
     const { date, exercise } = req.body as { date: string; exercise: any[] };
 
     const exercises = exercise.map((exerciseMap: any): Exercise => {
@@ -24,7 +33,7 @@ router.post('/training', (req: Request, res: Response) => {
 
     const newTraining = Training.build(TrainingDate.generate(date), exercises);
 
-    trainingRepository.save(newTraining);
+    // trainingRepository.save(newTraining);
     res.send(newTraining);
   } catch (err: any) {
     console.log(err);
