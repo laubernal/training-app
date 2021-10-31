@@ -4,6 +4,7 @@ import express, { Request, Response, Router } from 'express';
 import { UserRepository } from '../repositories/UserRepository';
 import { SignUpUseCase } from '../../Application/UseCases/SignUpUseCase';
 import { SignInCase } from '../../Application/UseCases/SignInCase';
+import { TOKEN_KEY } from '../../constants';
 
 const router: Router = express.Router();
 
@@ -32,7 +33,7 @@ router.post('/signup', (req: Request, res: Response): void => {
         id: id,
         email: email,
       },
-      'asdf'
+      TOKEN_KEY
     );
 
     req.session = {
@@ -62,7 +63,7 @@ router.post('/signin', (req: Request, res: Response): void => {
         id: id,
         email: email,
       },
-      'asdf'
+      TOKEN_KEY
     );
 
     req.session = {

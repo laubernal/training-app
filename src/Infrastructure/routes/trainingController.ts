@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { TOKEN_KEY } from '../../constants';
 import { Exercise } from '../../Domain/entities/Exercise';
 import { Serie } from '../../Domain/entities/Serie';
 import { Training } from '../../Domain/entities/Training';
@@ -12,15 +13,13 @@ const router: Router = express.Router();
 const trainingRepository = new TrainingRepository();
 
 router.post('/training', (req: Request, res: Response) => {
-  try {
-    // TO DO - Check if exists a jwt ------------------------
-    if (!req.session || !req.session.jwt) {
-      throw new Error('Invalid session - training');
-    }
-    const verifiedToken = jwt.verify(req.session.jwt, 'asdf');
-    console.log('verified token', verifiedToken);
+  if (!req.session || !req.session.jwt) {
+    res.send('Invalid session');
+    throw new Error('Invalid session - training');
+  }
 
-    // ------------------------------------------------------
+  try {
+    const verifiedToken = jwt.verify(req.session.jwt, TOKEN_KEY);
 
     const { date, exercise } = req.body as { date: string; exercise: any[] };
 
