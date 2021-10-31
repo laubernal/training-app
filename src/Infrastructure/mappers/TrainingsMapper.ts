@@ -6,19 +6,14 @@ import { IMapper } from './IMapper';
 
 export class TrainingsMapper implements IMapper<TrainingModel, Training> {
   public toDomain(training: TrainingModel): Training {
-    // return new Training(
-    //   training.id,
-    //   training.date,
-    //   new Exercise(
-    //     training.exercises.exerciseName,
-    //     new Serie(
-    //       training.exercises.series.reps,
-    //       training.exercises.series.weight,
-    //       training.exercises.series.seriesCount
-    //     )
-    //   )
-    // );
-    throw new Error('error to domain');
+    const exercises = training.exercises.map((exerciseMap: any) => {
+      const series = exerciseMap.series.map((serie: any) => {
+        return new Serie(serie.reps, serie.weight, serie.seriesCount);
+      });
+      return new Exercise(exerciseMap.exerciseName, series);
+    });
+
+    return new Training(training.id, training.date, exercises);
   }
 
   public toData(training: Training): TrainingModel {
