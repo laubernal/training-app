@@ -13,6 +13,7 @@ const router: Router = express.Router();
 const trainingRepository = new TrainingRepository();
 
 router.post('/training', (req: Request, res: Response) => {
+  // Create middleware to check the session
   if (!req.session || !req.session.jwt) {
     res.send('Invalid session');
     throw new Error('Invalid session - training');
@@ -34,6 +35,28 @@ router.post('/training', (req: Request, res: Response) => {
 
     trainingRepository.save(newTraining);
     res.send(newTraining);
+  } catch (err: any) {
+    console.log(err);
+    res.send({ msg: 'Error occurred', error: err.message });
+  }
+});
+
+router.get('/training', (req: Request, res: Response) => {
+  // Create middleware to check the session
+  if (!req.session || !req.session.jwt) {
+    res.send('Invalid session');
+    throw new Error('Invalid session - training');
+  }
+
+  try {
+    jwt.verify(req.session.jwt, TOKEN_KEY);
+
+    // Obtain the training from a given date
+    const { date } = req.body as { date: string };
+
+    // Validate the date
+    // Check if there is any training with the same date
+    // Show the training found
   } catch (err: any) {
     console.log(err);
     res.send({ msg: 'Error occurred', error: err.message });
