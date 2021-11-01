@@ -55,8 +55,18 @@ router.get('/training', (req: Request, res: Response) => {
     const { date } = req.body as { date: string };
 
     // Validate the date
+    const trainingDate = TrainingDate.generate(date);
+
     // Check if there is any training with the same date
+    const training = trainingRepository.getOneBy('date', trainingDate);
+
+    // Check if the training is undefined
+    if (training === undefined) {
+      throw new Error('No training found');
+    }
+
     // Show the training found
+    res.send(training);
   } catch (err: any) {
     console.log(err);
     res.send({ msg: 'Error occurred', error: err.message });
