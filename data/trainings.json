@@ -29,36 +29,5 @@
         ]
       }
     ]
-  },
-  {
-    "id": "f19fed7f-746d-4e21-99e0-673e4836e9aa",
-    "date": "28/10/2021",
-    "exercises": [
-      {
-        "exerciseName": "Dominadas",
-        "series": [
-          {
-            "reps": 10,
-            "weight": 10,
-            "seriesCount": 1
-          },
-          {
-            "reps": 5,
-            "weight": 10,
-            "seriesCount": 1
-          }
-        ]
-      },
-      {
-        "exerciseName": "Jalón",
-        "series": [
-          {
-            "reps": 8,
-            "weight": 10,
-            "seriesCount": 1
-          }
-        ]
-      }
-    ]
   }
 ]

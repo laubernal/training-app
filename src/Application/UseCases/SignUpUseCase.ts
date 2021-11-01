@@ -15,7 +15,7 @@ export class SignUpUseCase implements IUseCase<void> {
     private passwordConfirmation: string
   ) {}
 
-  public execute(): void {
+  public execute(): string {
     this.checkArgs();
 
     const emailValidated = new Email(this.email);
@@ -37,6 +37,7 @@ export class SignUpUseCase implements IUseCase<void> {
     );
 
     this.userRepository.save(newUser);
+    return this.userRepository.getId(emailValidated.value);
   }
 
   private checkArgs(): void {

@@ -14,7 +14,7 @@ router.post('/signup', (req: Request, res: Response): void => {
   const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
   try {
-    new SignUpUseCase(
+    const id = new SignUpUseCase(
       userRepository,
       firstName,
       lastName,
@@ -22,11 +22,6 @@ router.post('/signup', (req: Request, res: Response): void => {
       password,
       passwordConfirmation
     ).execute();
-
-    console.log('sign up case executed');
-
-    const id = userRepository.getId(email);
-    console.log('id', id);
 
     const userJwt = jwt.sign(
       {

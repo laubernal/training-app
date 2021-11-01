@@ -11,9 +11,9 @@ export abstract class FsRepository<T, K extends ObjectDefinition> {
 
   constructor(private reader: IReader<T>) {}
 
-  public save(item: K): void {
+  public save(item: K): void {    
     const newItem = this.mapper.toData(item);
-
+    
     this.reader.data.push(newItem);
     this.write();
   }

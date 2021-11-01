@@ -19,7 +19,7 @@ router.post('/training', (req: Request, res: Response) => {
   }
 
   try {
-    const verifiedToken = jwt.verify(req.session.jwt, TOKEN_KEY);
+    jwt.verify(req.session.jwt, TOKEN_KEY);
 
     const { date, exercise } = req.body as { date: string; exercise: any[] };
 
@@ -32,7 +32,7 @@ router.post('/training', (req: Request, res: Response) => {
 
     const newTraining = Training.build(TrainingDate.generate(date), exercises);
 
-    // trainingRepository.save(newTraining);
+    trainingRepository.save(newTraining);
     res.send(newTraining);
   } catch (err: any) {
     console.log(err);
