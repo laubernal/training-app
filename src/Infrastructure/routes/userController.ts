@@ -64,7 +64,6 @@ router.post('/signin', (req: Request, res: Response): void => {
     req.session = {
       jwt: userJwt,
     };
-    console.log('user jwt', userJwt);
 
     res.status(201).send('Logged in');
   } catch (err: any) {
