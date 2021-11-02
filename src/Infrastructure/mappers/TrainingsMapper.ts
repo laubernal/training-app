@@ -13,7 +13,7 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    return new Training(training.id, training.date, exercises);
+    return new Training(training.id, training.date, training.title, exercises);
   }
 
   public toData(training: Training): TrainingModel {
@@ -27,6 +27,7 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
     return {
       id: training.id,
       date: training.date,
+      title: training.title,
       exercises,
     };
   }

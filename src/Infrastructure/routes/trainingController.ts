@@ -22,7 +22,7 @@ router.post('/training', (req: Request, res: Response) => {
   try {
     jwt.verify(req.session.jwt, TOKEN_KEY);
 
-    const { date, exercise } = req.body as { date: string; exercise: any[] };
+    const { date, title, exercise } = req.body as { date: string; title: string; exercise: any[] };
 
     const exercises = exercise.map((exerciseMap: any): Exercise => {
       const series = exerciseMap.series.map((serie: any): Serie => {
@@ -31,7 +31,7 @@ router.post('/training', (req: Request, res: Response) => {
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    const newTraining = Training.build(TrainingDate.generate(date), exercises);
+    const newTraining = Training.build(TrainingDate.generate(date), title, exercises);    
 
     trainingRepository.save(newTraining);
     res.send(newTraining);
@@ -51,21 +51,17 @@ router.get('/training', (req: Request, res: Response) => {
   try {
     jwt.verify(req.session.jwt, TOKEN_KEY);
 
-    // Obtain the training from a given date
     const { date } = req.body as { date: string };
 
-    // Validate the date
     const trainingDate = TrainingDate.generate(date);
 
-    // Check if there is any training with the same date
+    // ¿Debería hacer un use case para esto?
     const training = trainingRepository.getOneBy('date', trainingDate);
 
-    // Check if the training is undefined
     if (training === undefined) {
       throw new Error('No training found');
     }
 
-    // Show the training found
     res.send(training);
   } catch (err: any) {
     console.log(err);
