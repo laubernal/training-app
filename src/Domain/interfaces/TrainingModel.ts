@@ -1,13 +1,8 @@
-export interface TrainingModel {
-  id: string;
-  date: string;
-  title: string;
-  exercises: {
-    exerciseName: string;
-    series: {
-      reps: number;
-      weight: number;
-      seriesCount: number;
-    }[];
-  }[];
+import { ExercisesModel } from './ExercisesModel';
+
+export class TrainingModel {
+  public id!: string;
+  public date!: string;
+  public title!: string;
+  public exercises!: ExercisesModel[];
 }
