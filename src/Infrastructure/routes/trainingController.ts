@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { GetTrainingCase } from '../../Application/UseCases/GetTrainingCase';
-import { NewTrainingCase } from '../../Application/UseCases/NewTrainingCase';
+import { GetTrainingUseCase } from '../../Application/UseCases/GetTrainingUseCase';
+import { NewTrainingUseCase } from '../../Application/UseCases/NewTrainingUseCase';
 
 import { TOKEN_KEY } from '../../constants';
 import { TrainingRepository } from '../repositories/TrainingRepository';
@@ -22,7 +22,7 @@ router.post('/training', (req: Request, res: Response) => {
 
     const { date, title, exercise } = req.body as { date: string; title: string; exercise: any[] };
 
-    const newTraining = new NewTrainingCase(trainingRepository, date, title, exercise);
+    const newTraining = new NewTrainingUseCase(trainingRepository, date, title, exercise);
 
     res.send(newTraining);
   } catch (err: any) {
@@ -43,7 +43,7 @@ router.get('/training', (req: Request, res: Response) => {
 
     const { date } = req.body as { date: string };
 
-    const training = new GetTrainingCase(trainingRepository, date).execute();
+    const training = new GetTrainingUseCase(trainingRepository, date).execute();
 
     res.send(training);
   } catch (err: any) {

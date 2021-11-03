@@ -3,7 +3,7 @@ import express, { Request, Response, Router } from 'express';
 
 import { UserRepository } from '../repositories/UserRepository';
 import { SignUpUseCase } from '../../Application/UseCases/SignUpUseCase';
-import { SignInCase } from '../../Application/UseCases/SignInCase';
+import { SignInUseCase } from '../../Application/UseCases/SignInUseCase';
 import { TOKEN_KEY } from '../../constants';
 
 const router: Router = express.Router();
@@ -49,7 +49,7 @@ router.post('/signin', (req: Request, res: Response): void => {
   const { email, password } = req.body;
 
   try {
-    new SignInCase(userRepository, email, password).execute();
+    new SignInUseCase(userRepository, email, password).execute();
 
     const id = userRepository.getId(email);
 

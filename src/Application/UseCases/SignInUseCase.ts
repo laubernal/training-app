@@ -4,7 +4,7 @@ import { IUserRepository } from '../../Domain/interfaces/IUserRepository';
 import { Email } from '../../Domain/vo/Email';
 import { IUseCase } from './IUseCase';
 
-export class SignInCase implements IUseCase<void> {
+export class SignInUseCase implements IUseCase<void> {
   constructor(
     private userRepository: IUserRepository,
     private email: string,

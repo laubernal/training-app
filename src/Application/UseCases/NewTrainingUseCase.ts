@@ -4,7 +4,7 @@ import { Training } from '../../Domain/entities/Training';
 import { ITrainingRepository } from '../../Domain/interfaces/ITrainingRepository';
 import { TrainingDate } from '../../Domain/vo/TrainingDate';
 
-export class NewTrainingCase {
+export class NewTrainingUseCase {
   constructor(
     private trainingRepository: ITrainingRepository,
     private date: string,

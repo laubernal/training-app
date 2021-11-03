@@ -2,7 +2,7 @@ import { Training } from '../../Domain/entities/Training';
 import { ITrainingRepository } from '../../Domain/interfaces/ITrainingRepository';
 import { TrainingDate } from '../../Domain/vo/TrainingDate';
 
-export class GetTrainingCase {
+export class GetTrainingUseCase {
   constructor(private trainingRepository: ITrainingRepository, private value: string) {}
 
   public execute(): Training {
