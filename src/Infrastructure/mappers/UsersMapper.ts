@@ -1,9 +1,9 @@
 import { User } from "../../Domain/entities/User";
-import { IUser } from "../../Domain/interfaces/IUser";
+import { UserModel } from "../../Domain/interfaces/UserModel";
 import { IMapper } from "./IMapper";
 
-export class UsersMapper implements IMapper<IUser, User> {
-    public toDomain(user: IUser): User {
+export class UsersMapper implements IMapper<UserModel, User> {
+    public toDomain(user: UserModel): User {
         return new User(
             user.id,
             user.firstName,
@@ -13,7 +13,7 @@ export class UsersMapper implements IMapper<IUser, User> {
         );
     }
 
-    public toData(user: User): IUser {
+    public toData(user: User): UserModel {
         return {
             id: user.id,
             firstName: user.firstName,
