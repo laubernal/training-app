@@ -1,11 +1,9 @@
 import express, { Request, Response, Router } from 'express';
 import jwt from 'jsonwebtoken';
+import { GetTrainingCase } from '../../Application/UseCases/GetTrainingCase';
+import { NewTrainingCase } from '../../Application/UseCases/NewTrainingCase';
 
 import { TOKEN_KEY } from '../../constants';
-import { Exercise } from '../../Domain/entities/Exercise';
-import { Serie } from '../../Domain/entities/Serie';
-import { Training } from '../../Domain/entities/Training';
-import { TrainingDate } from '../../Domain/vo/TrainingDate';
 import { TrainingRepository } from '../repositories/TrainingRepository';
 
 const router: Router = express.Router();
@@ -24,16 +22,8 @@ router.post('/training', (req: Request, res: Response) => {
 
     const { date, title, exercise } = req.body as { date: string; title: string; exercise: any[] };
 
-    const exercises = exercise.map((exerciseMap: any): Exercise => {
-      const series = exerciseMap.series.map((serie: any): Serie => {
-        return new Serie(serie.reps, serie.weight, serie.seriesCount);
-      });
-      return new Exercise(exerciseMap.exerciseName, series);
-    });
+    const newTraining = new NewTrainingCase(trainingRepository, date, title, exercise);
 
-    const newTraining = Training.build(TrainingDate.generate(date), title, exercises);    
-
-    trainingRepository.save(newTraining);
     res.send(newTraining);
   } catch (err: any) {
     console.log(err);
@@ -53,14 +43,7 @@ router.get('/training', (req: Request, res: Response) => {
 
     const { date } = req.body as { date: string };
 
-    const trainingDate = TrainingDate.generate(date);
-
-    // ¿Debería hacer un use case para esto?
-    const training = trainingRepository.getOneBy('date', trainingDate);
-
-    if (training === undefined) {
-      throw new Error('No training found');
-    }
+    const training = new GetTrainingCase(trainingRepository, date).execute();
 
     res.send(training);
   } catch (err: any) {
