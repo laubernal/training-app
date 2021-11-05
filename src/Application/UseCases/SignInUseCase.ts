@@ -27,7 +27,6 @@ export class SignInUseCase implements IUseCase<void> {
     }
   }
 
-  // This is a use case for sign in
   private comparePasswords(saved: string, supplied: string): boolean {
     const [hashed, salt] = saved.split('.');
 

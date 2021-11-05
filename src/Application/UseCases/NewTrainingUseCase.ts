@@ -25,6 +25,8 @@ export class NewTrainingUseCase {
     const newTraining = Training.build(TrainingDate.generate(this.date), this.title, exercises);
 
     this.trainingRepository.save(newTraining);
+
+    // Returning the new training is not correct, waiting for future correction!
     return newTraining;
   }
 
