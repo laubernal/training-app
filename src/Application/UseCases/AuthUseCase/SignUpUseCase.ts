@@ -1,9 +1,9 @@
-import { IUseCase } from './IUseCase';
-import { User } from '../../Domain/entities/User';
-import { Password } from '../../Domain/vo/Password';
-import { Email } from '../../Domain/vo/Email';
-import { Name } from '../../Domain/vo/Name';
-import { IUserRepository } from '../../Domain/interfaces/IUserRepository';
+import { IUseCase } from '../IUseCase';
+import { User } from '../../../Domain/entities/User';
+import { Password } from '../../../Domain/vo/Password';
+import { Email } from '../../../Domain/vo/Email';
+import { Name } from '../../../Domain/vo/Name';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
 
 export class SignUpUseCase implements IUseCase<void> {
   constructor(

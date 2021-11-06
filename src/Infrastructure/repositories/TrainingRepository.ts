@@ -1,6 +1,6 @@
 import { TRAININGS_JSON } from '../../constants';
 import { Training } from '../../Domain/entities/Training';
-import { TrainingModel } from '../../Domain/interfaces/TrainingModel';
+import { TrainingModel } from '../dataModel/TrainingModel';
 import { TrainingsMapper } from '../mappers/TrainingsMapper';
 import { FsRepository } from './FsRepository';
 import { JsonFileReader } from './JsonFileReader';

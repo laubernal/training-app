@@ -1,8 +1,8 @@
 import { scryptSync } from 'crypto';
 
-import { IUserRepository } from '../../Domain/interfaces/IUserRepository';
-import { Email } from '../../Domain/vo/Email';
-import { IUseCase } from './IUseCase';
+import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { Email } from '../../../Domain/vo/Email';
+import { IUseCase } from '../IUseCase';
 
 export class SignInUseCase implements IUseCase<void> {
   constructor(

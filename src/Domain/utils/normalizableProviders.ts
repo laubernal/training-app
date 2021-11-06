@@ -1,5 +1,5 @@
 import { PLUS_AND_DOT, PLUS_ONLY } from "../../constants";
-import { ObjectDefinition } from "../../ObjectDefinition";
+import { ObjectDefinition } from "../../types";
 
 export const normalizeableProviders: ObjectDefinition = {
     'gmail.com': {

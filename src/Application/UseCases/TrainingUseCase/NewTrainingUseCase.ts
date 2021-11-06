@@ -1,8 +1,8 @@
-import { Exercise } from '../../Domain/entities/Exercise';
-import { Serie } from '../../Domain/entities/Serie';
-import { Training } from '../../Domain/entities/Training';
-import { ITrainingRepository } from '../../Domain/interfaces/ITrainingRepository';
-import { TrainingDate } from '../../Domain/vo/TrainingDate';
+import { Exercise } from '../../../Domain/entities/Exercise';
+import { Serie } from '../../../Domain/entities/Serie';
+import { Training } from '../../../Domain/entities/Training';
+import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingRepository';
+import { TrainingDate } from '../../../Domain/vo/TrainingDate';
 
 export class NewTrainingUseCase {
   constructor(

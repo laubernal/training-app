@@ -2,9 +2,8 @@ import jwt from 'jsonwebtoken';
 import express, { Request, Response, Router } from 'express';
 
 import { UserRepository } from '../repositories/UserRepository';
-import { SignUpUseCase } from '../../Application/UseCases/SignUpUseCase';
-import { SignInUseCase } from '../../Application/UseCases/SignInUseCase';
-import { TOKEN_KEY } from '../../constants';
+import { SignUpUseCase } from '../../Application/UseCases/AuthUseCase/SignUpUseCase';
+import { SignInUseCase } from '../../Application/UseCases/AuthUseCase/SignInUseCase';
 
 const router: Router = express.Router();
 
@@ -28,7 +27,7 @@ router.post('/signup', (req: Request, res: Response): void => {
         id: id,
         email: email,
       },
-      TOKEN_KEY
+      process.env.TOKEN_KEY!
     );
 
     req.session = {
@@ -58,7 +57,7 @@ router.post('/signin', (req: Request, res: Response): void => {
         id: id,
         email: email,
       },
-      TOKEN_KEY
+      process.env.TOKEN_KEY!
     );
 
     req.session = {

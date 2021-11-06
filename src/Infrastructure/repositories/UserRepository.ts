@@ -1,6 +1,6 @@
 import { USERS_JSON } from '../../constants';
 import { User } from '../../Domain/entities/User';
-import { UserModel } from '../../Domain/interfaces/UserModel';
+import { UserModel } from '../dataModel/UserModel';
 import { UsersMapper } from '../mappers/UsersMapper';
 import { FsRepository } from './FsRepository';
 import { JsonFileReader } from './JsonFileReader';

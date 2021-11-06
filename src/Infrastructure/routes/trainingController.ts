@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 
-import { GetTrainingUseCase } from '../../Application/UseCases/GetTrainingUseCase';
-import { NewTrainingUseCase } from '../../Application/UseCases/NewTrainingUseCase';
+import { GetTrainingUseCase } from '../../Application/UseCases/TrainingUseCase/GetTrainingUseCase';
+import { NewTrainingUseCase } from '../../Application/UseCases/TrainingUseCase/NewTrainingUseCase';
 import { requireAuth } from '../middlewares/requireAuth';
 import { TrainingRepository } from '../repositories/TrainingRepository';
 

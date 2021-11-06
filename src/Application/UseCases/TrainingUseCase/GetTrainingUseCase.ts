@@ -1,6 +1,6 @@
-import { Training } from '../../Domain/entities/Training';
-import { ITrainingRepository } from '../../Domain/interfaces/ITrainingRepository';
-import { TrainingDate } from '../../Domain/vo/TrainingDate';
+import { Training } from '../../../Domain/entities/Training';
+import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingRepository';
+import { TrainingDate } from '../../../Domain/vo/TrainingDate';
 
 export class GetTrainingUseCase {
   constructor(private trainingRepository: ITrainingRepository, private value: string) {}
@@ -12,7 +12,7 @@ export class GetTrainingUseCase {
 
     const training = this.trainingRepository.getOneBy('date', trainingDate);
 
-    if (training === undefined) {
+    if (!training) {
       throw new Error('No training found');
     }
 

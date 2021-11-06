@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { TOKEN_KEY } from '../../constants';
-
 interface UserPayload {
   id: string;
   email: string;
@@ -16,14 +14,14 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
   }
 
   try {
-    const payload = jwt.verify(req.session.jwt, TOKEN_KEY) as UserPayload;
+    const payload = jwt.verify(req.session.jwt, process.env.TOKEN_KEY!) as UserPayload;
 
     const userJwt = jwt.sign(
       {
         id: payload.id,
         email: payload.email,
       },
-      TOKEN_KEY
+      process.env.TOKEN_KEY!
     );
 
     req.session = {

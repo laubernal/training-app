@@ -3,7 +3,7 @@ import path from 'path';
 
 import { DATA_DIR } from '../../constants';
 import { IReader } from '../../Domain/interfaces/IReader';
-import { ObjectDefinition } from '../../ObjectDefinition';
+import { ObjectDefinition } from '../../types';
 import { IMapper } from '../mappers/IMapper';
 
 export abstract class FsRepository<T, K extends ObjectDefinition> {

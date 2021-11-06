@@ -1,7 +1,7 @@
 import { randomBytes, scryptSync } from 'crypto';
 
 import { VO } from './VO';
-import { ObjectDefinition } from '../../ObjectDefinition';
+import { ObjectDefinition } from '../../types';
 import { LOWER_CASE_REGEX, NUMBER_REGEX, SYMBOL_REGEX, UPPER_CASE_REGEX } from '../../constants';
 
 const defaultOptions: ObjectDefinition = {

@@ -1,7 +1,7 @@
 import { Exercise } from '../../Domain/entities/Exercise';
 import { Serie } from '../../Domain/entities/Serie';
 import { Training } from '../../Domain/entities/Training';
-import { TrainingModel } from '../../Domain/interfaces/TrainingModel';
+import { TrainingModel } from '../dataModel/TrainingModel';
 import { IMapper } from './IMapper';
 
 export class TrainingsMapper implements IMapper<TrainingModel, Training> {
