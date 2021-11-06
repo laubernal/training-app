@@ -3,12 +3,12 @@ import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingReposit
 import { TrainingDate } from '../../../Domain/vo/TrainingDate';
 
 export class GetTrainingUseCase {
-  constructor(private trainingRepository: ITrainingRepository, private value: string) {}
+  constructor(private trainingRepository: ITrainingRepository) {}
 
-  public execute(): Training {
-    this.checkArgs();
+  public execute(value: string): Training {
+    this.checkArgs(value);
 
-    const trainingDate = TrainingDate.generate(this.value);
+    const trainingDate = TrainingDate.generate(value);
 
     const training = this.trainingRepository.getOneBy('date', trainingDate);
 
@@ -19,8 +19,8 @@ export class GetTrainingUseCase {
     return training;
   }
 
-  private checkArgs(): void {
-    if (!this.value) {
+  private checkArgs(value: string): void {
+    if (!value) {
       throw new Error('Data is missing');
     }
   }

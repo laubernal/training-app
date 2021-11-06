@@ -7,8 +7,6 @@ interface UserPayload {
 }
 
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
-  console.log('inside checksession');
-
   if (!req.session || !req.session.jwt) {
     throw new Error('Invalid session');
   }
@@ -27,6 +25,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
     req.session = {
       jwt: userJwt,
     };
+
     next();
   } catch (err: any) {
     throw new Error('User not authorized');

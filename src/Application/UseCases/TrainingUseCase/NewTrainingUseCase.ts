@@ -5,24 +5,19 @@ import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingReposit
 import { TrainingDate } from '../../../Domain/vo/TrainingDate';
 
 export class NewTrainingUseCase {
-  constructor(
-    private trainingRepository: ITrainingRepository,
-    private date: string,
-    private title: string,
-    private exercise: any[]
-  ) {}
+  constructor(private trainingRepository: ITrainingRepository) {}
 
-  public execute(): Training {
-    this.checkArgs();
+  public execute(date: string, title: string, exercise: any[]): Training {
+    this.checkArgs(date, title, exercise);
 
-    const exercises = this.exercise.map((exerciseMap: any): Exercise => {
+    const exercises = exercise.map((exerciseMap: any): Exercise => {
       const series = exerciseMap.series.map((serie: any): Serie => {
         return new Serie(serie.reps, serie.weight, serie.seriesCount);
       });
       return new Exercise(exerciseMap.exerciseName, series);
     });
 
-    const newTraining = Training.build(TrainingDate.generate(this.date), this.title, exercises);
+    const newTraining = Training.build(TrainingDate.generate(date), title, exercises);
 
     this.trainingRepository.save(newTraining);
 
@@ -30,8 +25,8 @@ export class NewTrainingUseCase {
     return newTraining;
   }
 
-  private checkArgs(): void {
-    if (!this.date || !this.title || !this.exercise) {
+  private checkArgs(date: string, title: string, exercise: any[]): void {
+    if (!date || !title || !exercise) {
       throw new Error('Some data is missing');
     }
   }

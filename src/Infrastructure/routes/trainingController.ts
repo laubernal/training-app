@@ -13,7 +13,7 @@ router.post('/training', requireAuth, (req: Request, res: Response) => {
   try {
     const { date, title, exercise } = req.body as { date: string; title: string; exercise: any[] };
 
-    const newTraining = new NewTrainingUseCase(trainingRepository, date, title, exercise).execute();
+    const newTraining = new NewTrainingUseCase(trainingRepository).execute(date, title, exercise);
 
     res.send(newTraining);
   } catch (err: any) {
@@ -26,7 +26,7 @@ router.get('/training', requireAuth, (req: Request, res: Response) => {
   try {
     const { date } = req.body as { date: string };
 
-    const training = new GetTrainingUseCase(trainingRepository, date).execute();
+    const training = new GetTrainingUseCase(trainingRepository).execute(date);
 
     res.send(training);
   } catch (err: any) {
