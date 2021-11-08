@@ -5,16 +5,12 @@ import { Email } from '../../../Domain/vo/Email';
 import { IUseCase } from '../IUseCase';
 
 export class SignInUseCase implements IUseCase<void> {
-  constructor(
-    private userRepository: IUserRepository,
-    private email: string,
-    private password: string
-  ) {}
+  constructor(private userRepository: IUserRepository) {}
 
-  public execute(): void {
-    this.checkArgs();
+  public execute(email: string, password: string): void {
+    this.checkArgs(email, password);
 
-    const emailValidated = new Email(this.email);
+    const emailValidated = new Email(email);
 
     const userExists = this.userRepository.getOneBy('email', emailValidated.value);
 
@@ -22,7 +18,7 @@ export class SignInUseCase implements IUseCase<void> {
       throw new Error('This user does not exist');
     }
 
-    if (this.comparePasswords(userExists.password, this.password) === false) {
+    if (this.comparePasswords(userExists.password, password) === false) {
       throw new Error('Incorrect password');
     }
   }
@@ -35,8 +31,8 @@ export class SignInUseCase implements IUseCase<void> {
     return hashed === suppliedHashedBuf.toString('hex');
   }
 
-  private checkArgs(): void {
-    if (!this.email || !this.password) {
+  private checkArgs(email: string, password: string): void {
+    if (!email || !password) {
       throw new Error('Some data is missing');
     }
   }

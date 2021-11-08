@@ -1,8 +1,9 @@
 import { Training } from '../../../Domain/entities/Training';
 import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingRepository';
 import { TrainingDate } from '../../../Domain/vo/TrainingDate';
+import { IUseCase } from '../IUseCase';
 
-export class GetTrainingUseCase {
+export class GetTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingRepository: ITrainingRepository) {}
 
   public execute(value: string): Training {

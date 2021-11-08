@@ -13,14 +13,13 @@ router.post('/signup', (req: Request, res: Response): void => {
   const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
   try {
-    const id = new SignUpUseCase(
-      userRepository,
+    const id = new SignUpUseCase(userRepository).execute(
       firstName,
       lastName,
       email,
       password,
       passwordConfirmation
-    ).execute();
+    );
 
     const userJwt = jwt.sign(
       {
@@ -48,7 +47,7 @@ router.post('/signin', (req: Request, res: Response): void => {
   const { email, password } = req.body;
 
   try {
-    new SignInUseCase(userRepository, email, password).execute();
+    new SignInUseCase(userRepository).execute(email, password);
 
     const id = userRepository.getId(email);
 

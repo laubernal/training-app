@@ -1,3 +1,3 @@
 export interface IUseCase<T> {
-    execute(): T;
+    execute(...args: string[] | any[]): T;
 }
