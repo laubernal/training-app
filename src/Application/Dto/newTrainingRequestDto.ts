@@ -1,4 +1,3 @@
 export class NewTrainingRequestDto {
-    constructor(
-    ) {}
+    constructor() {}
 }

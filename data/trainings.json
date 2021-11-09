@@ -30,5 +30,37 @@
         ]
       }
     ]
+  },
+  {
+    "id": "ecd0ca71-8d5e-499a-8687-a4c966cef5c6",
+    "date": "08/11/2021",
+    "title": "Test training 2",
+    "exercises": [
+      {
+        "exerciseName": "Press inclinado",
+        "series": [
+          {
+            "reps": 8,
+            "weight": 12,
+            "seriesCount": 1
+          },
+          {
+            "reps": 8,
+            "weight": 14,
+            "seriesCount": 2
+          }
+        ]
+      },
+      {
+        "exerciseName": "Jalón",
+        "series": [
+          {
+            "reps": 8,
+            "weight": 10,
+            "seriesCount": 1
+          }
+        ]
+      }
+    ]
   }
 ]
