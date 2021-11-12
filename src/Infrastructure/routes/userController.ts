@@ -4,6 +4,7 @@ import express, { Request, Response, Router } from 'express';
 import { UserRepository } from '../repositories/UserRepository';
 import { SignUpUseCase } from '../../Application/UseCases/AuthUseCase/SignUpUseCase';
 import { SignInUseCase } from '../../Application/UseCases/AuthUseCase/SignInUseCase';
+import { get } from '../controllers/decorators/routes';
 
 const router: Router = express.Router();
 
@@ -73,6 +74,9 @@ router.post('/signin', (req: Request, res: Response): void => {
   }
 });
 
+// class SignOutController {
+//   @get('/signout')
+
 router.get('/signout', (req: Request, res: Response): void => {
   try {
     req.session = null;
@@ -85,5 +89,6 @@ router.get('/signout', (req: Request, res: Response): void => {
     });
   }
 });
+// }
 
 export { router as user };
