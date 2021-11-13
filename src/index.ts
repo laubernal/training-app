@@ -2,7 +2,7 @@ require('dotenv').config();
 import express, { Application } from 'express';
 import cookieSession from 'cookie-session';
 
-import { AppRouter } from './AppRouter';
+import { AppRouter } from './Infrastructure/controllers/AppRouter';
 import { user } from './Infrastructure/routes/userController';
 import { training } from './Infrastructure/routes/trainingController';
 import { requireAuth } from './Infrastructure/middlewares/requireAuth';
