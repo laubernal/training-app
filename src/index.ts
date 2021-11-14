@@ -3,7 +3,7 @@ import express, { Application } from 'express';
 import cookieSession from 'cookie-session';
 
 import { AppRouter } from './Infrastructure/controllers/AppRouter';
-import { user } from './Infrastructure/routes/userController';
+// import { user } from './Infrastructure/routes/userController';
 import { training } from './Infrastructure/routes/trainingController';
 import { requireAuth } from './Infrastructure/middlewares/requireAuth';
 
@@ -15,12 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({ name: 'session', signed: false }));
 
 // Deleted in the future due to the AppRouter ->
-app.use(user);
+app.use(AppRouter.getInstance());
+// app.use(user);
 app.use(requireAuth);
 app.use(training);
 // <-
-
-app.use(AppRouter.getInstance());
 
 try {
   app.listen(port, () => {

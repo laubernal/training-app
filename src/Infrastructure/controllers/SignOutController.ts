@@ -5,7 +5,9 @@ import { Controller } from './decorators/controller';
 @Controller()
 export class SignOutController {
   @get('/signout')
-  public signOut(req: Request, res: Response) {
+  public signOut(req: Request, res: Response): void {
+    console.log('inside signout controller');
+
     try {
       req.session = null;
       res.status(200).send('You are logged out');
