@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { get } from '../controllers/decorators/routes';
+import { Controller } from './decorators/controller';
 
-// @Controller
+@Controller()
 export class SignOutController {
   @get('/signout')
   public signOut(req: Request, res: Response) {
