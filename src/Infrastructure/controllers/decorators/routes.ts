@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { MetadataKeys } from '../MetadataKeys';
 import { Methods } from '../Methods';
 
-function routeBinder(method: string) {
+function routeBinder(method: Methods.get | Methods.post) {
   return function (path: string) {
     return function (target: any, key: string, desc: PropertyDescriptor) {
-      console.log('insinde route binder');
+      console.log('inside route binder');
 
       Reflect.defineMetadata(MetadataKeys.path, path, target, key);
       Reflect.defineMetadata(MetadataKeys.method, method, target, key);

@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { SignUpUseCase } from '../../Application/UseCases/AuthUseCase/SignUpUseCase';
 import { UserRepository } from '../repositories/UserRepository';
-import { Controller } from './decorators/controller';
-import { post } from './decorators/routes';
+import { Controller, post } from './decorators';
 
 const userRepository = new UserRepository();
 
@@ -13,6 +12,8 @@ export class SignUpController {
   @post('/signup')
   public signUp(req: Request, res: Response): void {
     try {
+      console.log('inside signup controller');
+
       const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
       const id = new SignUpUseCase(userRepository).execute(

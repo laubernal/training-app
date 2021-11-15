@@ -3,18 +3,18 @@ import jwt from 'jsonwebtoken';
 
 import { SignInUseCase } from '../../Application/UseCases/AuthUseCase/SignInUseCase';
 import { UserRepository } from '../repositories/UserRepository';
-import { Controller } from './decorators/controller';
-import { post } from './decorators/routes';
-
-const userRepository = new UserRepository();
+import { Controller, post } from './decorators';
 
 @Controller()
 export class SignInController {
   @post('/signin')
   public signIn(req: Request, res: Response): void {
     try {
+      console.log('inside sign in controller');
+
       const { email, password } = req.body;
 
+      const userRepository = new UserRepository();
       new SignInUseCase(userRepository).execute(email, password);
 
       const id = userRepository.getId(email);

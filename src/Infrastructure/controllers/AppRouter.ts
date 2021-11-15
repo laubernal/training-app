@@ -1,9 +1,11 @@
-import express from 'express';
+import express, { Router } from 'express';
 
 export class AppRouter {
-  private static instance: express.Router;
+  private static instance: Router;
 
-  static getInstance(): express.Router {
+  public static getInstance(): Router {
+    console.log('inside get instance');
+
     if (!AppRouter.instance) {
       AppRouter.instance = express.Router();
     }

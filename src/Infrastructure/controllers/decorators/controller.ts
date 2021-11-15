@@ -9,11 +9,9 @@ export function Controller() {
 
     const router = AppRouter.getInstance();
 
-    for (let key of Object.getOwnPropertyNames(target.prototype)) {
-      const routeHandler = target.prototype[key];
+    for (const key of Object.getOwnPropertyNames(target.prototype)) {
+      const routeHandler = target.prototype[key].bind(target.prototype);
       const path = Reflect.getMetadata(MetadataKeys.path, target.prototype, key);
-      console.log(path);
-
       const method: Methods = Reflect.getMetadata(MetadataKeys.method, target.prototype, key);
 
       if (path) {
