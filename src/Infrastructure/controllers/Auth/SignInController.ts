@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { SignInUseCase } from '../../Application/UseCases/AuthUseCase/SignInUseCase';
-import { UserRepository } from '../repositories/UserRepository';
-import { Controller, post } from './decorators';
+import { SignInUseCase } from '../../../Application/UseCases/AuthUseCase/SignInUseCase';
+import { UserRepository } from '../../repositories/UserRepository';
+import { Controller, post } from '../decorators';
 
 @Controller()
 export class SignInController {
