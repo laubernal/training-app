@@ -10,8 +10,6 @@ export class SignInController {
   @post('/signin')
   public signIn(req: Request, res: Response): void {
     try {
-      console.log('inside sign in controller');
-
       const { email, password } = req.body;
 
       const userRepository = new UserRepository();

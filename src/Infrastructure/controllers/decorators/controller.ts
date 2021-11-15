@@ -4,8 +4,6 @@ import { MetadataKeys, Methods } from '../enums';
 
 export function Controller() {
   return function (target: Function) {
-    console.log('inside controller decorator');
-
     const router = AppRouter.getInstance();
 
     for (const key of Object.getOwnPropertyNames(target.prototype)) {
