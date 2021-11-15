@@ -12,6 +12,8 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
   }
 
   try {
+    console.log('inside require auth');
+
     const payload = jwt.verify(req.session.jwt, process.env.TOKEN_KEY!) as UserPayload;
 
     const userJwt = jwt.sign(
@@ -28,8 +30,8 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 
     next();
   } catch (err: any) {
-    console.log('erroooor', err);
-    
+    console.log(err);
+
     throw new Error('User not authorized');
   }
 };
