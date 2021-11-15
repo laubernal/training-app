@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Controller, get } from './decorators';
+import { Controller, get } from '../decorators';
 
 @Controller()
 export class SignOutController {

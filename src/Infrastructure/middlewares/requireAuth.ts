@@ -28,6 +28,8 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 
     next();
   } catch (err: any) {
+    console.log('erroooor', err);
+    
     throw new Error('User not authorized');
   }
 };

@@ -1,5 +1,5 @@
 import { Training } from '../../../Domain/entities/Training';
-import { ITrainingRepository } from '../../../Domain/interfaces/ITrainingRepository';
+import { ITrainingRepository } from '../../../Infrastructure/interfaces/ITrainingRepository';
 import { TrainingDate } from '../../../Domain/vo/TrainingDate';
 import { IUseCase } from '../IUseCase';
 

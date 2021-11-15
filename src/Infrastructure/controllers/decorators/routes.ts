@@ -1,6 +1,5 @@
 import 'reflect-metadata';
-import { MetadataKeys } from '../MetadataKeys';
-import { Methods } from '../enums/Methods';
+import { MetadataKeys, Methods } from '../enums';
 
 function routeBinder(method: Methods.get | Methods.post) {
   return function (path: string) {

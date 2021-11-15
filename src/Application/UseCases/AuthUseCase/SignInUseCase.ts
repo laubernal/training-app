@@ -1,6 +1,6 @@
 import { scryptSync } from 'crypto';
 
-import { IUserRepository } from '../../../Domain/interfaces/IUserRepository';
+import { IUserRepository } from '../../../Infrastructure/interfaces/IUserRepository';
 import { Email } from '../../../Domain/vo/Email';
 import { IUseCase } from '../IUseCase';
 

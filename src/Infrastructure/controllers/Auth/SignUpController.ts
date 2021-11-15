@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { SignUpUseCase } from '../../Application/UseCases/AuthUseCase/SignUpUseCase';
-import { UserRepository } from '../repositories/UserRepository';
-import { Controller, post } from './decorators';
+import { SignUpUseCase } from '../../../Application/UseCases/AuthUseCase/SignUpUseCase';
+import { UserRepository } from '../../repositories/UserRepository';
+import { Controller, post } from '../decorators';
 
 const userRepository = new UserRepository();
 
