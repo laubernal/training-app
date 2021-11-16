@@ -1,5 +1,6 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
 import 'reflect-metadata';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+
 import { AppRouter } from '../AppRouter';
 import { MetadataKeys, Methods } from '../enums';
 
