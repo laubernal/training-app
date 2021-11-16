@@ -12,8 +12,6 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
   }
 
   try {
-    console.log('inside require auth');
-
     const payload = jwt.verify(req.session.jwt, process.env.TOKEN_KEY!) as UserPayload;
 
     const userJwt = jwt.sign(

@@ -12,8 +12,6 @@ export class SignUpController {
   @post('/signup')
   public signUp(req: Request, res: Response): void {
     try {
-      console.log('inside signup controller');
-
       const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
       const id = new SignUpUseCase(userRepository).execute(

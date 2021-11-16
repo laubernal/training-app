@@ -12,5 +12,12 @@
     "lastName": "Bernal",
     "email": "test3@gmail.com",
     "password": "1c9ddbf8bf692a6669d94ad3833992bdab8bc914759b2782c8558bb4db76ff05b02e06c7fcae72233a71df6db69a4eebb4fc1e2ae974e414921b36d86464e43e.e0e5371fe5221dfc"
+  },
+  {
+    "id": "082ce8f8-2e3a-4eaa-b7a8-276425e337f4",
+    "firstName": "Laura",
+    "lastName": "Bernal",
+    "email": "test4@gmail.com",
+    "password": "7fc36ef98b39728414c5cfc4231f7ef81db05809ecdb816173cb94bf4de0f664764c270e230fabd340ea44426e9c1f77c60a261e6f22b9eba40a9eda6d2ef9c2.027af4fa781e082b"
   }
 ]

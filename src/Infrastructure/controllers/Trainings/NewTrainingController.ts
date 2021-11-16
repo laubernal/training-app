@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { NewTrainingUseCase } from '../../../Application/UseCases/TrainingUseCase/NewTrainingUseCase';
+import { requireAuth } from '../../middlewares/requireAuth';
 import { TrainingRepository } from '../../repositories/TrainingRepository';
-import { Controller, post } from '../decorators';
+import { Controller, post, use } from '../decorators';
 
 @Controller()
 export class NewTrainingController {
   @post('/training')
-  //@use(requireAuth)
+  @use(requireAuth)
   public newTraining(req: Request, res: Response): void {
     try {
       const { date, title, exercise } = req.body as {

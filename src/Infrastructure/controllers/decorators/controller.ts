@@ -10,9 +10,10 @@ export function Controller() {
       const routeHandler = target.prototype[key].bind(target.prototype);
       const path = Reflect.getMetadata(MetadataKeys.path, target.prototype, key);
       const method: Methods = Reflect.getMetadata(MetadataKeys.method, target.prototype, key);
+      const middlewares = Reflect.getMetadata(MetadataKeys.middleware, target.prototype, key) || [];
 
       if (path) {
-        router[method](`${path}`, routeHandler);
+        router[method](`${path}`, ...middlewares, routeHandler);
       }
     }
   };
