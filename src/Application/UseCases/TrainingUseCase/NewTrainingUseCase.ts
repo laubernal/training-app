@@ -10,8 +10,6 @@ export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingRepository: ITrainingRepository) {}
 
   public execute(date: string, title: string, exercise: Exercise[]): Training {
-    this.checkArgs(date, title, exercise);
-
     // const exercises = this.mapTrainingsToExercises(exercise)
 
     const exercises = exercise.map((exerciseMap: Exercise): Exercise => {
@@ -27,12 +25,6 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
     // Returning the new training is not correct, waiting for future correction!
     return newTraining;
-  }
-
-  private checkArgs(date: string, title: string, exercise: any[]): void {
-    if (!date || !title || !exercise) {
-      throw new Error('Some data is missing');
-    }
   }
 
   private mapTrainingsToExercises(trainings: NewTrainingRequestDto[]) {

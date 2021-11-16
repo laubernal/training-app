@@ -3,13 +3,14 @@ import jwt from 'jsonwebtoken';
 
 import { SignUpUseCase } from '../../../Application/UseCases/AuthUseCase/SignUpUseCase';
 import { UserRepository } from '../../repositories/UserRepository';
-import { Controller, post } from '../decorators';
+import { bodyValidator, Controller, post } from '../decorators';
 
 const userRepository = new UserRepository();
 
 @Controller()
 export class SignUpController {
   @post('/signup')
+  @bodyValidator('firstName', 'lastName', 'email', 'password', 'passwordConfirmation')
   public signUp(req: Request, res: Response): void {
     try {
       const { firstName, lastName, email, password, passwordConfirmation } = req.body;

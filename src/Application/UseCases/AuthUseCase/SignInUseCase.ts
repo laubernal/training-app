@@ -8,8 +8,6 @@ export class SignInUseCase implements IUseCase<void> {
   constructor(private userRepository: IUserRepository) {}
 
   public execute(email: string, password: string): void {
-    this.checkArgs(email, password);
-
     const emailValidated = new Email(email);
 
     const userExists = this.userRepository.getOneBy('email', emailValidated.value);
@@ -29,11 +27,5 @@ export class SignInUseCase implements IUseCase<void> {
     const suppliedHashedBuf = scryptSync(supplied, salt, 64);
 
     return hashed === suppliedHashedBuf.toString('hex');
-  }
-
-  private checkArgs(email: string, password: string): void {
-    if (!email || !password) {
-      throw new Error('Some data is missing');
-    }
   }
 }
