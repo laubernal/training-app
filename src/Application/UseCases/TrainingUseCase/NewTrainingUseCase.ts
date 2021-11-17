@@ -9,30 +9,25 @@ import { NewTrainingRequestDto } from '../../Dto/newTrainingRequestDto';
 export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingRepository: ITrainingRepository) {}
 
-  public execute(date: string, title: string, exercise: Exercise[]): Training {
-    // const exercises = this.mapTrainingsToExercises(exercise)
+  public execute(date: string, title: string, exerciseRequest: NewTrainingRequestDto[]): Training {
+    const exercises: Exercise[] = this.mapExerciseToExercises(exerciseRequest);
 
-    const exercises = exercise.map((exerciseMap: Exercise): Exercise => {
-      const series = exerciseMap.series.map((serie: Serie): Serie => {
-        return new Serie(serie.reps, serie.weight, serie.seriesCount);
-      });
-      return new Exercise(exerciseMap.exerciseName, series);
-    });
+    const training: Training = Training.build(TrainingDate.generate(date), title, exercises);
 
-    const newTraining = Training.build(TrainingDate.generate(date), title, exercises);
-
-    this.trainingRepository.save(newTraining);
+    this.trainingRepository.save(training);
 
     // Returning the new training is not correct, waiting for future correction!
-    return newTraining;
+    return training;
   }
 
-  private mapTrainingsToExercises(trainings: NewTrainingRequestDto[]) {
-    // const exercises = exercise.map((exerciseMap: Exercise): Exercise => {
-    //   const series = exerciseMap.series.map((serie: Serie): Serie => {
-    //     return new Serie(serie.reps, serie.weight, serie.seriesCount);
-    //   });
-    //   return new Exercise(exerciseMap.exerciseName, series);
-    // });
+  private mapExerciseToExercises(exerciseRequest: NewTrainingRequestDto[]): Exercise[] {
+    const exercises = exerciseRequest.map((exercise: NewTrainingRequestDto): Exercise => {
+      const series = exercise.series.map((serie: Serie): Serie => {
+        return new Serie(serie.reps, serie.weight, serie.seriesCount);
+      });
+      return new Exercise(exercise.exerciseName, series);
+    });
+
+    return exercises;
   }
 }
