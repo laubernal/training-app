@@ -1,0 +1,2 @@
+ALTER TABLE training
+ALTER COLUMN fk_us_id TYPE VARCHAR(50);
