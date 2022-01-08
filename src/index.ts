@@ -7,7 +7,7 @@ import { AppRouter } from './Infrastructure/controllers/AppRouter';
 import './Infrastructure/controllers/Auth';
 import './Infrastructure/controllers/Trainings';
 
-import { PostgreRepo } from './Infrastructure/repositories/PostgreRepository';
+import { UserPgRepository } from './Infrastructure/repositories/PostgresqlDB/UserPgRepository';
 
 const app: Application = express();
 const port = process.env.PORT || 5000;
@@ -17,8 +17,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({ name: 'session', signed: false }));
 app.use(AppRouter.getInstance());
 
-const pgRepo = new PostgreRepo();
-// pgRepo.getUser(client);
+const userPgRepository = new UserPgRepository();
+// userPgRepository.getOneBy('us_id', '1');
+// userPgRepository.save('us_id, us_first_name, us_last_name, us_email, us_password', [
+//   '3',
+//   'Adri',
+//   'Demonil',
+//   'adri@gmail.com',
+//   'password',
+// ]);
 
 try {
   app.listen(port, () => {
