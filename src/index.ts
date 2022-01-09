@@ -20,10 +20,10 @@ app.use(AppRouter.getInstance());
 const userPgRepository = new UserPgRepository();
 // userPgRepository.getOneBy('us_id', '1');
 // userPgRepository.save('us_id, us_first_name, us_last_name, us_email, us_password', [
-//   '3',
-//   'Adri',
+//   '4',
+//   'Demonitu',
 //   'Demonil',
-//   'adri@gmail.com',
+//   'demonitu@gmail.com',
 //   'password',
 // ]);
 
