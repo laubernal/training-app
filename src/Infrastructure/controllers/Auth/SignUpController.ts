@@ -2,10 +2,12 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { SignUpUseCase } from '../../../Application/UseCases/AuthUseCase/SignUpUseCase';
+import { UserPgRepository } from '../../repositories/PostgresqlDb/UserPgRepository';
 import { UserRepository } from '../../repositories/UserRepository';
 import { bodyValidator, Controller, post } from '../decorators';
 
-const userRepository = new UserRepository();
+// const userRepository = new UserRepository();
+const userPgRepository = new UserPgRepository();
 
 @Controller()
 export class SignUpController {
@@ -15,7 +17,7 @@ export class SignUpController {
     try {
       const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
-      const id = new SignUpUseCase(userRepository).execute(
+      const id = new SignUpUseCase(userPgRepository).execute(
         firstName,
         lastName,
         email,

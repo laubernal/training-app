@@ -1,66 +1,76 @@
-//   save
-//   INSERT INTO table (column1, column2, ...) VALUES ('value1', 'value2', ...);
-//   getOneBy(column: string, value: string)
-//   SELECT * FROM table WHERE column=value;
-//   getAllBy(column: string, value: string)
-//   SELECT * FROM table WHERE column=value;
-//   delete(column: string, value: string)
-//   DELETE FROM table WHERE column=value;
-//   update(columnID: string, idValue: string, column1: string, value1: string, column2: string)
-//   UPDATE table SET column1=value1, column2=value2, ... WHERE columnID=idValue;
-
+import { ObjectDefinition } from '../../../types';
+import { IMapper } from '../../mappers/IMapper';
 import { Database } from './Database';
 
-export class PostgreRepository {
+export abstract class PostgreRepository<T, K extends ObjectDefinition> {
+  protected abstract mapper: IMapper<T, K>;
+
   constructor(private tableName: string) {}
 
-  public async save(column: string, values: string[]): Promise<void> {
+  public async save(item: K): Promise<void> {
     try {
-      const dollarValues = values
-        .map((_, index: number) => {
+      const newItem = this.mapper.toData(item);
+
+      const columns = Object.keys(newItem);
+      const values = Object.values(newItem);
+
+      const preparedStatements = values
+        .map((_: any, index: number) => {
           return `$${index + 1}`;
         })
         .join(', ');
 
-      await Database.query(`INSERT INTO ${this.tableName} (${column}) VALUES (${dollarValues})`, [
-        ...values,
-      ]);
+      await Database.query(
+        `INSERT INTO ${this.tableName} (${columns}) VALUES (${preparedStatements})`,
+        [...values]
+      );
 
       console.log('Saved successfully');
     } catch (err: any) {
-      throw new Error(err.stack);
+      throw new Error(err.message);
     }
   }
 
-  public async getOneBy(selectList: string[], column: string, value: string): Promise<void> {
+  public async getOneBy(column: string, value: string): Promise<K | undefined> {
     try {
-      const res = await Database.query(
-        `SELECT ${selectList.toString()} FROM ${this.tableName} WHERE ${column} = $1`,
+      const queryResult = await Database.query(
+        `SELECT * FROM ${this.tableName} WHERE ${column} = $1`,
         [value]
       );
-      console.log(`user name: ${res.rows[0].us_first_name} ${res.rows[0].us_last_name}`);
+
+      if (queryResult.rows.length === 0) {
+        return undefined;
+      }
+
+      return this.mapper.toDomain(queryResult.rows[0]);
     } catch (err: any) {
-      throw new Error(err.stack);
+      throw new Error(err.message);
     }
   }
 
-  public async getAllBy(column: string, value: string) {
+  public async getAllBy(column: string, value: string): Promise<K | undefined> {
     try {
-      const res = await Database.query(`SELECT * FROM ${this.tableName} WHERE ${column}=$1`, [
-        value,
-      ]);
+      const queryResult = await Database.query(
+        `SELECT * FROM ${this.tableName} WHERE ${column}=$1`,
+        [value]
+      );
 
-      console.log(res.rows[0]);
+      if (queryResult.rows.length === 0) {
+        return undefined;
+      }
+
+      console.log(queryResult.rows[0]);
+      return this.mapper.toDomain(queryResult.rows[0]);
     } catch (err: any) {
-      throw new Error(err.stack);
+      throw new Error(err.message);
     }
   }
 
-  public async delete(column: string, value: string) {
+  public async delete(column: string, value: string): Promise<void> {
     try {
       await Database.query(`DELETE FROM ${this.tableName} WHERE ${column}=$1`, [value]);
     } catch (err: any) {
-      throw new Error(err.stack);
+      throw new Error(err.message);
     }
   }
 
@@ -71,20 +81,20 @@ export class PostgreRepository {
     id: string
   ): Promise<void> {
     try {
-      const dollarValues = values
+      const preparedStatements = values
         .map((_, index: number) => {
           return `${column[index]}=$${index + 1}`;
         })
         .join(', ');
 
       const res = await Database.query(
-        `UPDATE ${this.tableName} SET ${dollarValues} WHERE ${columnId}=${id}`,
+        `UPDATE ${this.tableName} SET ${preparedStatements} WHERE ${columnId}=${id}`,
         [...values]
       );
 
       console.log(res.rows[0]);
     } catch (err: any) {
-      throw new Error(err.stack);
+      throw new Error(err.message);
     }
   }
 }

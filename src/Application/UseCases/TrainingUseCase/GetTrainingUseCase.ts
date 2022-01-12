@@ -6,7 +6,7 @@ import { IUseCase } from '../IUseCase';
 export class GetTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingRepository: ITrainingRepository) {}
 
-  public execute(value: string): Training {
+  public async execute(value: string): Promise<Training> {
     const trainingDate = TrainingDate.generate(value);
 
     const training = this.trainingRepository.getOneBy('date', trainingDate);

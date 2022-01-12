@@ -6,11 +6,11 @@ export class Database {
   private constructor() {}
 
   public static instance(): Pool {
-    // if (!this.client) {
-    //   this.client = new Pool();
-    // }
-
-    this.client = new Pool();
+    this.client = new Pool({
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    });
 
     return this.client;
   }

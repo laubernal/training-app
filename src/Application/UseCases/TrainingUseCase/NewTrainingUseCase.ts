@@ -9,7 +9,11 @@ import { NewTrainingRequestDto } from '../../Dto/newTrainingRequestDto';
 export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingRepository: ITrainingRepository) {}
 
-  public execute(date: string, title: string, exerciseRequest: NewTrainingRequestDto[]): Training {
+  public async execute(
+    date: string,
+    title: string,
+    exerciseRequest: NewTrainingRequestDto[]
+  ): Promise<Training> {
     const exercises: Exercise[] = this.mapExerciseToExercises(exerciseRequest);
 
     const training: Training = Training.build(TrainingDate.generate(date), title, exercises);
