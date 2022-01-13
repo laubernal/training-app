@@ -82,17 +82,18 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
   ): Promise<void> {
     try {
       const preparedStatements = values
-        .map((_, index: number) => {
+        .map((_: any, index: number) => {
           return `${column[index]}=$${index + 1}`;
         })
         .join(', ');
 
-      const res = await Database.query(
-        `UPDATE ${this.tableName} SET ${preparedStatements} WHERE ${columnId}=${id}`,
+      const queryResult = await Database.query(
+        `UPDATE ${this.tableName} SET ${preparedStatements} WHERE ${columnId}='${id}' RETURNING *`,
         [...values]
       );
 
-      console.log(res.rows[0]);
+      // console.log(this.mapper.toDomain(queryResult.rows[0]));
+      console.log('Updated successfully');
     } catch (err: any) {
       throw new Error(err.message);
     }
