@@ -32,7 +32,7 @@ export class SignInController {
       //FIN PRUEBAS---------------------
 
       // new SignInUseCase(userRepository).execute(email, password);
-      new SignInUseCase(userPgRepository).execute(email, password);
+      await new SignInUseCase(userPgRepository).execute(email, password);
 
       // const id = userRepository.getId(email);
       // const id = userPgRepository.getId(email);

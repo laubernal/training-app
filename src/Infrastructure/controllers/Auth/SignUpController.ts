@@ -3,21 +3,19 @@ import jwt from 'jsonwebtoken';
 
 import { SignUpUseCase } from '../../../Application/UseCases/AuthUseCase/SignUpUseCase';
 import { UserPgRepository } from '../../repositories/PostgresqlDb/UserPgRepository';
-import { UserRepository } from '../../repositories/UserRepository';
 import { bodyValidator, Controller, post } from '../decorators';
 
-// const userRepository = new UserRepository();
 const userPgRepository = new UserPgRepository();
 
 @Controller()
 export class SignUpController {
   @post('/signup')
   @bodyValidator('firstName', 'lastName', 'email', 'password', 'passwordConfirmation')
-  public signUp(req: Request, res: Response): void {
+  public async signUp(req: Request, res: Response): Promise<void> {
     try {
       const { firstName, lastName, email, password, passwordConfirmation } = req.body;
 
-      const id = new SignUpUseCase(userPgRepository).execute(
+      const id = await new SignUpUseCase(userPgRepository).execute(
         firstName,
         lastName,
         email,
@@ -37,7 +35,7 @@ export class SignUpController {
         jwt: userJwt,
       };
 
-      res.send('User created');
+      res.status(201).send('User created');
     } catch (err: any) {
       console.log(err);
       res.send({
