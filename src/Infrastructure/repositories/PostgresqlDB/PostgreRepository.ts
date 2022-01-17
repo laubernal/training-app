@@ -98,4 +98,19 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
       throw new Error(err.message);
     }
   }
+
+  public async getAllTrainings(): Promise<void> {
+    try {
+      const queryResult = await Database.query(
+        `
+        SELECT * FROM training INNER JOIN training_exercise ON training.tr_id = training_exercise.training_id INNER JOIN exercise ON training_exercise.exercise_id = exercise.ex_id
+        INNER JOIN exercise_set ON exercise.ex_id = exercise_set.fk_ex_id`,
+        []
+      );
+
+      console.log(queryResult.rows);
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
+  }
 }

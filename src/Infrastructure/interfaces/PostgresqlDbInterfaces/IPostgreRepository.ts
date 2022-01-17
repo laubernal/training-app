@@ -4,4 +4,5 @@ export interface IPostgreRepository<K> {
   getAllBy(column: string, value: string): Promise<K | undefined>;
   delete(column: string, value: string): Promise<void>;
   update(column: string[], values: string[], columnId: string, id: string): Promise<void>;
+  getAllTrainings(): Promise<void>;
 }

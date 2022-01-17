@@ -8,6 +8,7 @@ export class SignInUseCase implements IUseCase<void> {
   constructor(private userPgRepository: IUserPgRepository) {}
 
   public async execute(email: string, password: string): Promise<void> {
+    await this.userPgRepository.getAllTrainings();
     const emailValidated = new Email(email);
 
     const userExists = await this.userPgRepository.getOneBy('us_email', emailValidated.value);
