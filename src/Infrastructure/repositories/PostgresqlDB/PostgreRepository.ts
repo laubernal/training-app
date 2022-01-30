@@ -1,3 +1,4 @@
+import { QueryResult } from 'pg';
 import { ObjectDefinition } from '../../../types';
 import { IMapper } from '../../mappers/IMapper';
 import { Database } from './Database';
@@ -9,7 +10,10 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
 
   public async save(item: K): Promise<void> {
     try {
+      console.log('save new item');
+
       const newItem = this.mapper.toData(item);
+      console.log('new item', newItem);
 
       const columns = Object.keys(newItem);
       const values = Object.values(newItem);
@@ -42,7 +46,9 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
         return undefined;
       }
 
-      return this.mapper.toDomain(queryResult.rows[0]);
+      const resultModel = this.mapper.rawDataToModel(queryResult.rows[0]);
+
+      return this.mapper.toDomain(resultModel[0]);
     } catch (err: any) {
       throw new Error(err.message);
     }
@@ -79,7 +85,7 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
     values: string[],
     columnId: string,
     id: string
-  ): Promise<void> {
+  ): Promise<K | undefined> {
     try {
       const preparedStatements = values
         .map((_: any, index: number) => {
@@ -92,23 +98,17 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
         [...values]
       );
 
-      // console.log(this.mapper.toDomain(queryResult.rows[0]));
+      if (queryResult.rows.length === 0) {
+        return undefined;
+      }
+
+      const resultModel = this.mapper.rawDataToModel(queryResult.rows);
+
+      const resultDomain = this.mapper.toDomain(resultModel[0]);
+
       console.log('Updated successfully');
-    } catch (err: any) {
-      throw new Error(err.message);
-    }
-  }
 
-  public async getAllTrainings(): Promise<void> {
-    try {
-      const queryResult = await Database.query(
-        `
-        SELECT * FROM training INNER JOIN training_exercise ON training.tr_id = training_exercise.training_id INNER JOIN exercise ON training_exercise.exercise_id = exercise.ex_id
-        INNER JOIN exercise_set ON exercise.ex_id = exercise_set.fk_ex_id`,
-        []
-      );
-
-      console.log(queryResult.rows);
+      return resultDomain;
     } catch (err: any) {
       throw new Error(err.message);
     }

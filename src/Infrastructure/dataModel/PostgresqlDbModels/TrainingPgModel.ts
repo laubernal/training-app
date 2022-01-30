@@ -1,10 +1,31 @@
-import { ExercisePgModel } from './ExercisePgModel';
+import { ExercisesPgModel } from './ExercisesPgModel';
 
 export class TrainingPgModel {
-  public id!: string;
-  public date!: string;
-  public title!: string;
-  //   public note!: string;
-  public exercises!: ExercisePgModel[];
-  //   public userId!: string;
+  constructor(
+    private _id: string,
+    private _date: string,
+    private _title: string,
+    private _note: string,
+    private _exercises: ExercisesPgModel[]
+  ) {}
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public get date(): string {
+    return this._date;
+  }
+
+  public get title(): string {
+    return this._title;
+  }
+
+  public get note(): string {
+    return this._note;
+  }
+
+  public get exercises(): ExercisesPgModel[] {
+    return this._exercises;
+  }
 }

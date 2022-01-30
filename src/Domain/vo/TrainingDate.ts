@@ -4,7 +4,11 @@ export class TrainingDate {
       throw new Error('Invalid date');
     }
 
-    return date;
+    const [day, month, year] = date.split('/');
+
+    const validatedTrainingDate = year.concat(`/${month}`, `/${day}`);
+
+    return validatedTrainingDate;
   }
 
   private static validateDate(date: string): boolean {

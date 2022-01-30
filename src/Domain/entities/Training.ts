@@ -3,14 +3,15 @@ import { Id } from '../vo/Id';
 import { TrainingDate } from '../vo/TrainingDate';
 
 export class Training {
-  public static build(date: string, title: string, exercises: Exercise[]): Training {
-    return new Training(Id.generate(), TrainingDate.generate(date), title, exercises);
+  public static build(date: string, title: string, note: string, exercises: Exercise[]): Training {
+    return new Training(Id.generate(), TrainingDate.generate(date), title, note, exercises);
   }
 
   constructor(
     private _id: string,
     private _date: string,
     private _title: string,
+    private _note: string,
     private _exercises: Exercise[]
   ) {}
 
@@ -24,6 +25,10 @@ export class Training {
 
   public get title(): string {
     return this._title;
+  }
+
+  public get note(): string {
+    return this._note;
   }
 
   public get exercises(): Exercise[] {

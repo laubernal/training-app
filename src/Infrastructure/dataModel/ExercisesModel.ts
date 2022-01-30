@@ -1,6 +1,6 @@
-import { SeriesModel } from "./SeriesModel";
+import { SeriesModel } from './SeriesModel';
 
 export class ExercisesModel {
-    public exerciseName!: string;
-    public series!: SeriesModel[];
+  public exerciseName!: string;
+  public series!: SeriesModel[];
 }

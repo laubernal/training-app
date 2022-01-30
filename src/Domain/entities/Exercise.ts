@@ -1,13 +1,22 @@
-import { Serie } from './Serie';
+import { Category } from './Category';
+import { Set } from './Set';
 
 export class Exercise {
-  constructor(private _exerciseName: string, private _series: Serie[]) {}
+  constructor(
+    private _categoryName: Category,
+    private _exerciseName: string,
+    private _sets: Set[]
+  ) {}
+
+  public get categoryName(): Category {
+    return this._categoryName;
+  }
 
   public get exerciseName(): string {
     return this._exerciseName;
   }
 
-  public get series(): Serie[] {
-    return this._series;
+  public get sets(): Set[] {
+    return this._sets;
   }
 }

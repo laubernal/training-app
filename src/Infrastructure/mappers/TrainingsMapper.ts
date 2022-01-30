@@ -1,19 +1,21 @@
 import { Exercise } from '../../Domain/entities/Exercise';
-import { Serie } from '../../Domain/entities/Serie';
+import { Set } from '../../Domain/entities/Set';
 import { Training } from '../../Domain/entities/Training';
 import { TrainingModel } from '../dataModel/TrainingModel';
 import { IMapper } from './IMapper';
 
 export class TrainingsMapper implements IMapper<TrainingModel, Training> {
+  public rawDataToModel(item: any): any {}
+
   public toDomain(training: TrainingModel): Training {
     const exercises = training.exercises.map((exerciseMap: any) => {
       const series = exerciseMap.series.map((serie: any) => {
-        return new Serie(serie.reps, serie.weight, serie.seriesCount);
+        return new Set(serie.reps, serie.weight, serie.seriesCount);
       });
-      return new Exercise(exerciseMap.exerciseName, series);
+      return new Exercise(exerciseMap.categoryName, exerciseMap.exerciseName, series);
     });
 
-    return new Training(training.id, training.date, training.title, exercises);
+    return new Training(training.id, training.date, training.title, training.note, exercises);
   }
 
   public toData(training: Training): TrainingModel {
@@ -21,13 +23,18 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
       const series = exerciseMap.series.map((serie: any) => {
         return { reps: serie.reps, weight: serie.weight, seriesCount: serie.seriesCount };
       });
-      return { exerciseName: exerciseMap.exerciseName, series };
+      return {
+        categoryName: exerciseMap.categoryName,
+        exerciseName: exerciseMap.exerciseName,
+        series,
+      };
     });
 
     return {
       id: training.id,
       date: training.date,
       title: training.title,
+      note: training.note,
       exercises,
     };
   }

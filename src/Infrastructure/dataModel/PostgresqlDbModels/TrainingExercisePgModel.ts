@@ -1,4 +1,5 @@
 export class TrainingExercisePgModel {
-  public trainingId!: string;
-  public exerciseId!: string;
+  public id!: string;
+  public fkTrainingId!: string;
+  public fkExerciseId!: string;
 }
