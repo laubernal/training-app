@@ -162,12 +162,12 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
     if (training.exercises) {
       exercises = training.exercises.map((exerciseMap: any) => {
         const sets = exerciseMap.sets.map((set: any) => {
-          return new Set(set.reps, set.weight, set.setsCount);
+          return new Set(set.id, set.reps, set.weight, set.setsCount);
         });
 
-        const category = new Category(exerciseMap.category.categoryName);
+        const category = new Category(exerciseMap.category.id, exerciseMap.category.categoryName);
 
-        return new Exercise(category, exerciseMap.exerciseName, sets);
+        return new Exercise(exerciseMap.id, category, exerciseMap.exerciseName, sets);
       });
     }
 

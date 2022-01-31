@@ -4,12 +4,12 @@ import { Training } from '../../../Domain/entities/Training';
 import { IUseCase } from '../IUseCase';
 import { NewTrainingRequestDto } from '../../Dto/newTrainingRequestDto';
 import { ITrainingPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/ITrainingPgRepository';
+import { Category } from '../../../Domain/entities/Category';
 
 export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingPgRepository: ITrainingPgRepository) {}
 
-
-  // execute receives the newTrainingRequestDto only 
+  // execute receives the newTrainingRequestDto only
   public async execute(
     date: string,
     title: string,
@@ -26,14 +26,14 @@ export class NewTrainingUseCase implements IUseCase<Training> {
     return training;
   }
 
-
   // Change method name
   private mapExerciseToExercises(exerciseRequest: NewTrainingRequestDto[]): Exercise[] {
     const exercises = exerciseRequest.map((exercise: NewTrainingRequestDto): Exercise => {
       const sets = exercise.sets.map((set: Set): Set => {
-        return new Set(set.reps, set.weight, set.setsCount);
+        return Set.build(set.reps, set.weight, set.setsCount);
       });
-      return new Exercise(exercise.categoryName, exercise.exerciseName, sets);
+
+      return Exercise.build(exercise.categoryName.categoryName, exercise.exerciseName, sets);
     });
 
     return exercises;

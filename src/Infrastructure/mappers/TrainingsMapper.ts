@@ -9,10 +9,10 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
 
   public toDomain(training: TrainingModel): Training {
     const exercises = training.exercises.map((exerciseMap: any) => {
-      const series = exerciseMap.series.map((serie: any) => {
-        return new Set(serie.reps, serie.weight, serie.seriesCount);
+      const sets = exerciseMap.series.map((set: any) => {
+        return new Set(set.id, set.reps, set.weight, set.seriesCount);
       });
-      return new Exercise(exerciseMap.categoryName, exerciseMap.exerciseName, series);
+      return new Exercise(exerciseMap.id, exerciseMap.categoryName, exerciseMap.exerciseName, sets);
     });
 
     return new Training(training.id, training.date, training.title, training.note, exercises);
@@ -20,8 +20,8 @@ export class TrainingsMapper implements IMapper<TrainingModel, Training> {
 
   public toData(training: Training): TrainingModel {
     const exercises = training.exercises.map((exerciseMap: any) => {
-      const series = exerciseMap.series.map((serie: any) => {
-        return { reps: serie.reps, weight: serie.weight, seriesCount: serie.seriesCount };
+      const series = exerciseMap.series.map((set: any) => {
+        return { reps: set.reps, weight: set.weight, seriesCount: set.seriesCount };
       });
       return {
         categoryName: exerciseMap.categoryName,
