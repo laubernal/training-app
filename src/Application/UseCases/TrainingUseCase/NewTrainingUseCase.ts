@@ -2,23 +2,26 @@ import { Exercise } from '../../../Domain/entities/Exercise';
 import { Set } from '../../../Domain/entities/Set';
 import { Training } from '../../../Domain/entities/Training';
 import { IUseCase } from '../IUseCase';
-import { NewTrainingRequestDto } from '../../Dto/newTrainingRequestDto';
+import { NewTrainingDto } from '../../Dto/NewTrainingDto';
 import { ITrainingPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/ITrainingPgRepository';
-import { Category } from '../../../Domain/entities/Category';
+import { ExerciseDto } from '../../Dto/ExerciseDto';
+import { SetDto } from '../../Dto/SetDto';
+import { CategoryDto } from '../../Dto/CategoryDto';
 
 export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingPgRepository: ITrainingPgRepository) {}
 
-  // execute receives the newTrainingRequestDto only
-  public async execute(
-    date: string,
-    title: string,
-    note: string,
-    exerciseRequest: NewTrainingRequestDto[]
-  ): Promise<Training> {
-    const exercises: Exercise[] = this.mapExerciseToExercises(exerciseRequest);
+  public async execute(newTraining: NewTrainingDto): Promise<Training> {
+    console.log('use case new training dto: ', newTraining);
 
-    const training: Training = Training.build(date, title, note, exercises);
+    const exercises: Exercise[] = this.dtoToDomain(newTraining.exercise);
+
+    const training: Training = Training.build(
+      newTraining.date,
+      newTraining.title,
+      newTraining.note,
+      exercises
+    );
 
     this.trainingPgRepository.save(training);
 
@@ -26,14 +29,16 @@ export class NewTrainingUseCase implements IUseCase<Training> {
     return training;
   }
 
-  // Change method name
-  private mapExerciseToExercises(exerciseRequest: NewTrainingRequestDto[]): Exercise[] {
-    const exercises = exerciseRequest.map((exercise: NewTrainingRequestDto): Exercise => {
-      const sets = exercise.sets.map((set: Set): Set => {
+  private dtoToDomain(exercise: ExerciseDto[]): Exercise[] {
+    console.log('before map');
+
+    const exercises = exercise.map((exercise: ExerciseDto): Exercise => {
+      const sets = exercise.sets.map((set: SetDto): Set => {
         return Set.build(set.reps, set.weight, set.setsCount);
       });
 
-      return Exercise.build(exercise.categoryName.categoryName, exercise.exerciseName, sets);
+      // WARNING - FIX CATEGORYNAME!!
+      return Exercise.build(exercise.category.categoryName, exercise.exerciseName, sets);
     });
 
     return exercises;

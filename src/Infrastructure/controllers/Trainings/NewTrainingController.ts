@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { ExerciseDto } from '../../../Application/Dto/ExerciseDto';
+import { NewTrainingDto } from '../../../Application/Dto/NewTrainingDto';
 import { NewTrainingUseCase } from '../../../Application/UseCases/TrainingUseCase/NewTrainingUseCase';
 import { requireAuth } from '../../middlewares/requireAuth';
 import { TrainingPgRepository } from '../../repositories/PostgresqlDb/TrainingPgRepository';
@@ -15,14 +17,13 @@ export class NewTrainingController {
         date: string;
         title: string;
         note: string;
-        exercise: any[];
+        exercise: ExerciseDto[];
       };
 
+      const newTrainingDto = new NewTrainingDto(date, title, note, exercise);
+
       const newTraining = new NewTrainingUseCase(new TrainingPgRepository()).execute(
-        date,
-        title,
-        note,
-        exercise
+        newTrainingDto
       );
 
       res.send(newTraining);
