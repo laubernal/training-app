@@ -7,33 +7,39 @@
 -- ORDER BY exercise_id ASC,
 --   set_count ASC
 -- WHERE $ { column } = $1 
--- INSERT INTO category (cat_id, cat_name)
-  -- VALUES ('3', 'Espalda');
-  -- INSERT INTO exercise (ex_id, ex_name, fk_cat_id)
-  -- VALUES ('4', 'Dominadas', '3');
-  -- INSERT INTO exercise_set (
-  --     set_id,
-  --     set_count,
-  --     set_reps,
-  --     set_weight,
-  --     fk_ex_id
-  --   )
-  -- VALUES ('7', 1, 10, 0, '4');
-  -- INSERT INTO exercise_set (
-  --     set_id,
-  --     set_count,
-  --     set_reps,
-  --     set_weight,
-  --     fk_ex_id
-  --   )
-  -- VALUES ('8', 2, 8, 0, '4');
-  -- INSERT INTO training (tr_id, tr_date, tr_note, fk_us_id, tr_title)
-  -- VALUES (
-  --     '3',
-  --     '2022/01/27',
-  --     'adding a third training',
-  --     'a8242cca-6221-4e03-a818-5c12f7069493',
-  --     'Third training'
-  --   );
-  -- INSERT INTO training_exercise (tr_ex_id, training_id, exercise_id)
-  -- VALUES ('4', '3', '3');
+
+INSERT INTO category (cat_id, cat_name)
+  VALUES ('3', 'Espalda');
+  
+  INSERT INTO exercise (ex_id, ex_name, fk_cat_id)
+  VALUES ('4', 'Dominadas', '3');
+
+  INSERT INTO exercise_set (
+      set_id,
+      set_count,
+      set_reps,
+      set_weight,
+      fk_ex_id
+    )
+  VALUES ('7', 1, 10, 0, '4');
+
+  INSERT INTO exercise_set (
+      set_id,
+      set_count,
+      set_reps,
+      set_weight,
+      fk_ex_id
+    )
+  VALUES ('8', 2, 8, 0, '4');
+
+  INSERT INTO training (tr_id, tr_date, tr_note, fk_us_id, tr_title)
+  VALUES (
+      '3',
+      '2022/01/27',
+      'adding a third training',
+      'a8242cca-6221-4e03-a818-5c12f7069493',
+      'Third training'
+    );
+
+  INSERT INTO training_exercise (tr_ex_id, training_id, exercise_id)
+  VALUES ('4', '3', '3');

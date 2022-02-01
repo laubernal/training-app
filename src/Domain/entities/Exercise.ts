@@ -3,13 +3,13 @@ import { Category } from './Category';
 import { Set } from './Set';
 
 export class Exercise {
-  public static build(categoryName: string, exerciseName: string, sets: Set[]): Exercise {
-    return new Exercise(Id.generate(), Category.build(categoryName), exerciseName, sets);
+  public static build(category: Category, exerciseName: string, sets: Set[]): Exercise {
+    return new Exercise(Id.generate(), category, exerciseName, sets);
   }
 
   constructor(
     private _id: string,
-    private _categoryName: Category,
+    private _category: Category,
     private _exerciseName: string,
     private _sets: Set[]
   ) {}
@@ -18,8 +18,8 @@ export class Exercise {
     return this._id;
   }
 
-  public get categoryName(): Category {
-    return this._categoryName;
+  public get category(): Category {
+    return this._category;
   }
 
   public get exerciseName(): string {

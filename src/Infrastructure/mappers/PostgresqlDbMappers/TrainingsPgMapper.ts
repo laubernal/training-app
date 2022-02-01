@@ -179,8 +179,6 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
 
     const exercises = training.exercises.map((exerciseMap: any) => {
       const sets = exerciseMap.sets.map((set: any) => {
-        console.log('set', set);
-
         return new SetsPgModel(set.id, set.reps, set.weight, set.setsCount);
       });
 
