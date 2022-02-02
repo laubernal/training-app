@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+
 import { ExerciseDto } from '../../../Application/Dto/ExerciseDto';
 import { NewTrainingDto } from '../../../Application/Dto/NewTrainingDto';
 import { NewTrainingUseCase } from '../../../Application/UseCases/TrainingUseCase/NewTrainingUseCase';
-import { requireAuth } from '../../middlewares/requireAuth';
+import { currentUser, requireAuth } from '../../middlewares/requireAuth';
 import { TrainingPgRepository } from '../../repositories/PostgresqlDb/TrainingPgRepository';
 import { bodyValidator, Controller, post, use } from '../decorators';
 
@@ -10,7 +12,8 @@ import { bodyValidator, Controller, post, use } from '../decorators';
 export class NewTrainingController {
   @post('/training')
   @use(requireAuth)
-  @bodyValidator('date', 'title', 'exercise')
+  @use(currentUser)
+  @bodyValidator('date', 'title', 'note', 'exercise')
   public newTraining(req: Request, res: Response): void {
     try {
       const { date, title, note, exercise } = req.body as {
@@ -20,7 +23,7 @@ export class NewTrainingController {
         exercise: ExerciseDto[];
       };
 
-      const newTrainingDto = new NewTrainingDto(date, title, note, exercise);
+      const newTrainingDto = new NewTrainingDto(date, title, note, exercise, req.currentUser!.id);
 
       const newTraining = new NewTrainingUseCase(new TrainingPgRepository()).execute(
         newTrainingDto

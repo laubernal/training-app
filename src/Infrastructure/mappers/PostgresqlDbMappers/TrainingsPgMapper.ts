@@ -15,28 +15,31 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
     let exercises: ExercisesPgModel[] = [];
     let sets: SetsPgModel[] = [];
 
-    rawData.map((rawData: queryResultTraining) => {
+    for (const rawDataElement of rawData) {
       if (trainings.length === 0) {
-        this.pushFullTraining(rawData, sets, exercises, trainings);
-      } else {
-        const lastTrainingModelId = trainings[trainings.length - 1].id;
-        const lastExerciseModelId = exercises[exercises.length - 1].id;
-
-        if (this.lastIdIsEqualToActual(lastTrainingModelId, rawData.tr_id)) {
-          if (this.lastIdIsEqualToActual(lastExerciseModelId, rawData.ex_id)) {
-            this.pushSet(rawData, sets);
-          } else {
-            this.flushModelArray(sets);
-
-            this.pushFullExercise(rawData, sets, exercises);
-          }
-        } else {
-          this.flushModelArray(sets, exercises);
-
-          this.pushFullTraining(rawData, sets, exercises, trainings);
-        }
+        this.pushFullTraining(rawDataElement, sets, exercises, trainings);
+        continue;
       }
-    });
+
+      const lastTrainingModelId = trainings[trainings.length - 1].id;
+      const lastExerciseModelId = exercises[exercises.length - 1].id;
+
+      if (this.lastIdIsEqualToActual(lastTrainingModelId, rawDataElement.tr_id)) {
+        if (this.lastIdIsEqualToActual(lastExerciseModelId, rawDataElement.ex_id)) {
+          this.pushSet(rawDataElement, sets);
+          continue;
+        }
+
+        this.flushModelArray(sets);
+
+        this.pushFullExercise(rawDataElement, sets, exercises);
+        continue;
+      }
+
+      this.flushModelArray(sets, exercises);
+
+      this.pushFullTraining(rawDataElement, sets, exercises, trainings);
+    }
 
     return trainings;
   }
@@ -65,10 +68,7 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
   }
 
   private lastIdIsEqualToActual(lastId: string, actualId: string): boolean {
-    if (lastId === actualId) {
-      return true;
-    }
-    return false;
+    return lastId === actualId;
   }
 
   private flushModelArray(
@@ -119,7 +119,8 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
         rawData.tr_date,
         rawData.tr_title,
         rawData.tr_note,
-        exercises
+        exercises,
+        rawData.fk_us_id
       )
     );
   }
@@ -139,7 +140,14 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
       });
     }
 
-    return new Training(training.id, training.date, training.title, training.note, exercises);
+    return new Training(
+      training.id,
+      training.date,
+      training.title,
+      training.note,
+      exercises,
+      training.userId
+    );
   }
 
   public toData(training: Training): TrainingPgModel {
@@ -163,7 +171,8 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
       training.date,
       training.title,
       training.note,
-      exercises
+      exercises,
+      training.userId
     );
   }
 }

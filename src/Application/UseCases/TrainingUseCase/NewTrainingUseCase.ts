@@ -19,7 +19,8 @@ export class NewTrainingUseCase implements IUseCase<Training> {
         newTraining.date,
         newTraining.title,
         newTraining.note,
-        exercises
+        exercises,
+        newTraining.userId
       );
 
       this.trainingPgRepository.save(training);

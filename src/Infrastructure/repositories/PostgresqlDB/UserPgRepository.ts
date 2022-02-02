@@ -10,13 +10,13 @@ export class UserPgRepository extends PostgreRepository<UserPgModel, User> {
     super('users');
   }
 
-  public async getId(email: string): Promise<User> {
+  public async getId(email: string): Promise<string> {
     const user = await this.getOneBy('us_email', email);
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    return user;
+    return user.id;
   }
 }

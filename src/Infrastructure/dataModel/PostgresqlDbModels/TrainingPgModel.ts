@@ -6,7 +6,8 @@ export class TrainingPgModel {
     private _date: string,
     private _title: string,
     private _note: string,
-    private _exercises: ExercisesPgModel[]
+    private _exercises: ExercisesPgModel[],
+    private _userId: string
   ) {}
 
   public get id(): string {
@@ -27,5 +28,9 @@ export class TrainingPgModel {
 
   public get exercises(): ExercisesPgModel[] {
     return this._exercises;
+  }
+
+  public get userId(): string {
+    return this._userId;
   }
 }

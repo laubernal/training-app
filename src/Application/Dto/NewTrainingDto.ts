@@ -5,6 +5,7 @@ export class NewTrainingDto {
     public date: string,
     public title: string,
     public note: string,
-    public exercise: ExerciseDto[]
+    public exercise: ExerciseDto[],
+    public userId: string
   ) {}
 }
