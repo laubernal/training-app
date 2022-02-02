@@ -15,99 +15,25 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
     let exercises: ExercisesPgModel[] = [];
     let sets: SetsPgModel[] = [];
 
-    rawData.map((rawData: queryResultTraining, index: number) => {
-      if (index === 0) {
-        this.pushSet(
-          sets,
-          rawData.set_id,
-          rawData.set_count,
-          rawData.set_reps,
-          parseFloat(rawData.set_weight)
-        );
-
-        this.pushExercise(
-          exercises,
-          rawData.ex_id,
-          rawData.ex_name,
-          sets,
-          rawData.cat_id,
-          rawData.cat_name
-        );
-
-        this.pushTraining(
-          trainings,
-          rawData.tr_id,
-          rawData.tr_date,
-          rawData.tr_title,
-          rawData.tr_note,
-          exercises
-        );
+    rawData.map((rawData: queryResultTraining) => {
+      if (trainings.length === 0) {
+        this.pushFullTraining(rawData, sets, exercises, trainings);
       } else {
         const lastTrainingModelId = trainings[trainings.length - 1].id;
         const lastExerciseModelId = exercises[exercises.length - 1].id;
 
-        if (lastTrainingModelId === rawData.tr_id) {
-          if (lastExerciseModelId === rawData.ex_id) {
-            this.pushSet(
-              sets,
-              rawData.set_id,
-              rawData.set_count,
-              rawData.set_reps,
-              parseFloat(rawData.set_weight)
-            );
+        if (this.lastIdIsEqualToActual(lastTrainingModelId, rawData.tr_id)) {
+          if (this.lastIdIsEqualToActual(lastExerciseModelId, rawData.ex_id)) {
+            this.pushSet(rawData, sets);
           } else {
-            if (sets.length !== 0) {
-              sets = [];
-            }
+            this.flushModelArray(sets);
 
-            this.pushSet(
-              sets,
-              rawData.set_id,
-              rawData.set_count,
-              rawData.set_reps,
-              parseFloat(rawData.set_weight)
-            );
-
-            this.pushExercise(
-              exercises,
-              rawData.ex_id,
-              rawData.ex_name,
-              sets,
-              rawData.cat_id,
-              rawData.cat_name
-            );
+            this.pushFullExercise(rawData, sets, exercises);
           }
         } else {
-          if (sets.length !== 0 && exercises.length !== 0) {
-            sets = [];
-            exercises = [];
-          }
+          this.flushModelArray(sets, exercises);
 
-          this.pushSet(
-            sets,
-            rawData.set_id,
-            rawData.set_count,
-            rawData.set_reps,
-            parseFloat(rawData.set_weight)
-          );
-
-          this.pushExercise(
-            exercises,
-            rawData.ex_id,
-            rawData.ex_name,
-            sets,
-            rawData.cat_id,
-            rawData.cat_name
-          );
-
-          this.pushTraining(
-            trainings,
-            rawData.tr_id,
-            rawData.tr_date,
-            rawData.tr_title,
-            rawData.tr_note,
-            exercises
-          );
+          this.pushFullTraining(rawData, sets, exercises, trainings);
         }
       }
     });
@@ -115,44 +41,86 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
     return trainings;
   }
 
-  private pushSet(
+  private pushFullExercise(
+    rawData: queryResultTraining,
     sets: SetsPgModel[],
-    setId: string,
-    setCount: number,
-    setReps: number,
-    setWeight: number
+    exercises: ExercisesPgModel[]
   ): void {
-    sets.push(new SetsPgModel(setId, setCount, setReps, setWeight));
+    this.pushSet(rawData, sets);
+
+    this.pushExercise(rawData, exercises, sets);
+  }
+
+  private pushFullTraining(
+    rawData: queryResultTraining,
+    sets: SetsPgModel[],
+    exercises: ExercisesPgModel[],
+    trainings: TrainingPgModel[]
+  ): void {
+    this.pushSet(rawData, sets);
+
+    this.pushExercise(rawData, exercises, sets);
+
+    this.pushTraining(rawData, trainings, exercises);
+  }
+
+  private lastIdIsEqualToActual(lastId: string, actualId: string): boolean {
+    if (lastId === actualId) {
+      return true;
+    }
+    return false;
+  }
+
+  private flushModelArray(
+    setsModel: SetsPgModel[],
+    exercisesModel?: ExercisesPgModel[] | undefined
+  ): void {
+    if (setsModel.length !== 0 && exercisesModel?.length !== 0) {
+      setsModel = [];
+      exercisesModel = [];
+    }
+    return;
+  }
+
+  private pushSet(rawData: queryResultTraining, sets: SetsPgModel[]): void {
+    sets.push(
+      new SetsPgModel(
+        rawData.set_id,
+        rawData.set_count,
+        rawData.set_reps,
+        parseFloat(rawData.set_weight)
+      )
+    );
   }
 
   private pushExercise(
+    rawData: queryResultTraining,
     exercises: ExercisesPgModel[],
-    exerciseId: string,
-    exerciseName: string,
-    sets: SetsPgModel[],
-    categoryId: string,
-    categoryName: string
+    sets: SetsPgModel[]
   ): void {
     exercises.push(
       new ExercisesPgModel(
-        exerciseId,
-        exerciseName,
+        rawData.ex_id,
+        rawData.ex_name,
         sets,
-        new CategoryPgModel(categoryId, categoryName)
+        new CategoryPgModel(rawData.cat_id, rawData.cat_name)
       )
     );
   }
 
   private pushTraining(
+    rawData: queryResultTraining,
     trainings: TrainingPgModel[],
-    trainingId: string,
-    trainingDate: string,
-    trainingTitle: string,
-    trainingNote: string,
     exercises: ExercisesPgModel[]
   ): void {
     trainings.push(
-      new TrainingPgModel(trainingId, trainingDate, trainingTitle, trainingNote, exercises)
+      new TrainingPgModel(
+        rawData.tr_id,
+        rawData.tr_date,
+        rawData.tr_title,
+        rawData.tr_note,
+        exercises
+      )
     );
   }
 
