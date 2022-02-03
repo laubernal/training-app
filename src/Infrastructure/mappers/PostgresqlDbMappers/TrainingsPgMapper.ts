@@ -24,19 +24,20 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
       const lastTrainingModelId = trainings[trainings.length - 1].id;
       const lastExerciseModelId = exercises[exercises.length - 1].id;
 
-      if (this.lastIdIsEqualToActual(lastTrainingModelId, rawDataElement.tr_id)) {
-        if (this.lastIdIsEqualToActual(lastExerciseModelId, rawDataElement.ex_id)) {
+      if (this.lastIdIsEqualToCurrent(lastTrainingModelId, rawDataElement.tr_id)) {
+        if (this.lastIdIsEqualToCurrent(lastExerciseModelId, rawDataElement.ex_id)) {
           this.pushSet(rawDataElement, sets);
           continue;
         }
 
-        this.flushModelArray(sets);
+        sets = [];
 
         this.pushFullExercise(rawDataElement, sets, exercises);
         continue;
       }
 
-      this.flushModelArray(sets, exercises);
+      sets = [];
+      exercises = [];
 
       this.pushFullTraining(rawDataElement, sets, exercises, trainings);
     }
@@ -67,19 +68,8 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
     this.pushTraining(rawData, trainings, exercises);
   }
 
-  private lastIdIsEqualToActual(lastId: string, actualId: string): boolean {
-    return lastId === actualId;
-  }
-
-  private flushModelArray(
-    setsModel: SetsPgModel[],
-    exercisesModel?: ExercisesPgModel[] | undefined
-  ): void {
-    if (setsModel.length !== 0 && exercisesModel?.length !== 0) {
-      setsModel = [];
-      exercisesModel = [];
-    }
-    return;
+  private lastIdIsEqualToCurrent(lastId: string, currentId: string): boolean {
+    return lastId === currentId;
   }
 
   private pushSet(rawData: queryResultTraining, sets: SetsPgModel[]): void {

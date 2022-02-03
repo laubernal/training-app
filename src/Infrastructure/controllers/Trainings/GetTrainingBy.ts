@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { GetTrainingUseCase } from '../../../Application/UseCases/TrainingUseCase/GetTrainingUseCase';
-import { requireAuth } from '../../middlewares/requireAuth';
+import { requireAuth } from '../../middlewares/auth';
 import { TrainingPgRepository } from '../../repositories/PostgresqlDb/TrainingPgRepository';
 import { bodyValidator, Controller, get, use } from '../decorators';
 

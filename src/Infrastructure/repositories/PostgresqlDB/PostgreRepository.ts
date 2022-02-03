@@ -1,4 +1,3 @@
-import { QueryResult } from 'pg';
 import { ObjectDefinition } from '../../../types';
 import { IMapper } from '../../mappers/IMapper';
 import { Database } from './Database';

@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 
 import { ExerciseDto } from '../../../Application/Dto/ExerciseDto';
 import { NewTrainingDto } from '../../../Application/Dto/NewTrainingDto';
 import { NewTrainingUseCase } from '../../../Application/UseCases/TrainingUseCase/NewTrainingUseCase';
-import { currentUser, requireAuth } from '../../middlewares/requireAuth';
+import { currentUser, requireAuth } from '../../middlewares/auth';
 import { TrainingPgRepository } from '../../repositories/PostgresqlDb/TrainingPgRepository';
 import { bodyValidator, Controller, post, use } from '../decorators';
 
