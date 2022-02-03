@@ -8,17 +8,21 @@ export class SignInUseCase implements IUseCase<void> {
   constructor(private userPgRepository: IUserPgRepository) {}
 
   public async execute(email: string, password: string): Promise<void> {
-    // await this.userPgRepository.getAllTrainings();
-    const emailValidated = new Email(email);
+    try {
+      // await this.userPgRepository.getAllTrainings();
+      const emailValidated = new Email(email);
 
-    const userExists = await this.userPgRepository.getOneBy('us_email', emailValidated.value);
+      const userExists = await this.userPgRepository.getOneBy('us_email', emailValidated.value);
 
-    if (!userExists) {
-      throw new Error('This user does not exist');
-    }
+      if (!userExists) {
+        throw new Error('This user does not exist');
+      }
 
-    if (this.comparePasswords(userExists.password, password) === false) {
-      throw new Error('Incorrect password');
+      if (this.comparePasswords(userExists.password, password) === false) {
+        throw new Error('Incorrect password');
+      }
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   }
 

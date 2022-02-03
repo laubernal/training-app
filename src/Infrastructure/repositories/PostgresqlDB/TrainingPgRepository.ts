@@ -17,31 +17,55 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     super(tableName);
   }
 
+  // SAVE STEPS
+  //   1. Check if the training already exists
+  // 	1.2. If it does exist, throw new error  - Training already exists
+
+  // 2. Loop the exercises[] and keep the exercises id (to do step 4)
+  // 	2.1. Check if the category already exists [CHANGE HOW THE ID OF THE CATEGROY IS GENERATED IN THE ENTITY]
+  // 		2.1.1. If it does not exist, save the category
+  // 	2.2. Check if the exercise already exists [CHANGE HOW THE ID OF THE CATEGROY IS GENERATED IN THE ENTITY]
+  // 		2.2.1. If it does not exist, save the exercise
+  // 	2.3. Loop the sets[]
+  // 		2.3.1. Save each set
+
+  // 3. Save the training
+
+  // 4. Save relation of the training with the exercises id from step 2
+
   public async save(training: Training): Promise<void> {
     try {
       // Map to TrainingPgModel
       const newTraining = this.mapper.toData(training);
+      console.log('new training: ', newTraining);
 
-      // Check if training already exists
-      // Use getOneTrainingBy('tr_id', training.id)
+      // Check if training already exists -- Use getOneTrainingBy('tr_id', training.id)
       // If training does exists, return
-      const trainingExists = await this.checkTrainingExists(training.id);
+      const trainingExists = await this.trainingExists(training.id);
 
       if (trainingExists) {
         throw new Error('Training already exists');
       }
+      console.log('training does not exist');
 
       // Loop the exercises array
       // If training does not exist, check if category already exists, if not insert it
       // SELECT * FROM category WHERE cat_id = category.id
-      const categoryIds = training.exercises.map(exercise => {
-        return exercise.category.id;
+
+      // newTraining.exercises.map(exercise => {
+      const categories = newTraining.exercises.map(exercise => {
+        return exercise.category;
       });
+      console.log('categories: ', categories);
 
-      const categoryExists = await this.checkIfExists('category', 'cat_id', '');
+      for (const category of categories) {
+        const categoryExists = await this.checkIfExists('category', 'cat_id', category.id);
+        console.log('category exists: ', categoryExists);
 
-      if (!categoryExists) {
-        // If does not exist: INSERT INTO category (cat_id, cat_name) VALUES [...]
+        if (!categoryExists) {
+          // If does not exist: INSERT INTO category (cat_id, cat_name) VALUES [...]
+          await this.saveCategory(category.id, category.categoryName);
+        }
       }
       // Return category id (both cases)
 
@@ -72,6 +96,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       //   });
       //   console.log('exercise: ', exercise);
       // });
+      // });
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -91,7 +116,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     }
   }
 
-  private async checkTrainingExists(trainingId: string): Promise<boolean> {
+  private async trainingExists(trainingId: string): Promise<boolean> {
     try {
       const trainingExists = await this.getOneTrainingBy('tr_id', trainingId);
 
@@ -100,6 +125,19 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       }
 
       return false;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  private async saveCategory(categoryId: string, categoryName: string): Promise<void> {
+    try {
+      const queryResult = await Database.query(
+        `INSERT INTO category (cat_id, cat_name) VALUES $1, $2`,
+        [categoryId, categoryName]
+      );
+
+      console.log('query result save category: ', queryResult.rows[0]);
     } catch (error: any) {
       throw new Error(error.message);
     }

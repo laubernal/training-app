@@ -15,25 +15,29 @@ export class SignUpUseCase implements IUseCase<string> {
     password: string,
     passwordConfirmation: string
   ): Promise<string> {
-    const emailValidated = new Email(email);
-    const userExists = await this.userPgRepository.getOneBy('us_email', emailValidated.value);
+    try {
+      const emailValidated = new Email(email);
+      const userExists = await this.userPgRepository.getOneBy('us_email', emailValidated.value);
 
-    if (userExists) {
-      throw new Error('This user already exists');
+      if (userExists) {
+        throw new Error('This user already exists');
+      }
+
+      if (password !== passwordConfirmation) {
+        throw new Error('Passwords must match');
+      }
+
+      const newUser = User.build(
+        new Name(firstName),
+        new Name(lastName),
+        emailValidated,
+        new Password(password)
+      );
+
+      await this.userPgRepository.save(newUser);
+      return await this.userPgRepository.getId(emailValidated.value);
+    } catch (error: any) {
+      throw new Error(error.message);
     }
-
-    if (password !== passwordConfirmation) {
-      throw new Error('Passwords must match');
-    }
-
-    const newUser = User.build(
-      new Name(firstName),
-      new Name(lastName),
-      emailValidated,
-      new Password(password)
-    );
-
-    await this.userPgRepository.save(newUser);
-    return await this.userPgRepository.getId(emailValidated.value);
   }
 }
