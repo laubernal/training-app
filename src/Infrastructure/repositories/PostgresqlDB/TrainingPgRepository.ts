@@ -1,4 +1,6 @@
 import { QueryResult } from 'pg';
+
+import { TRAINING_TABLENAME } from '../../../constants';
 import { Exercise } from '../../../Domain/entities/Exercise';
 import { Set } from '../../../Domain/entities/Set';
 import { Training } from '../../../Domain/entities/Training';
@@ -8,13 +10,12 @@ import { TrainingsPgMapper } from '../../mappers/PostgresqlDbMappers/TrainingsPg
 import { Database } from './Database';
 import { PostgreRepository } from './PostgreRepository';
 
-const tableName = 'training';
 
 export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Training> {
   protected mapper = new TrainingsPgMapper();
 
   constructor() {
-    super(tableName);
+    super(TRAINING_TABLENAME);
   }
 
   // SAVE STEPS
@@ -146,7 +147,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
   public async getOneTrainingBy(column: string, value: string): Promise<Training | undefined> {
     try {
       const queryResult: QueryResult<queryResultTraining> = await Database.query(
-        `SELECT * FROM ${tableName} 
+        `SELECT * FROM ${TRAINING_TABLENAME} 
         INNER JOIN training_exercise ON training.tr_id = training_exercise.training_id 
         INNER JOIN exercise ON training_exercise.exercise_id = exercise.ex_id
         INNER JOIN exercise_set ON exercise.ex_id = exercise_set.fk_ex_id 
@@ -174,7 +175,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     try {
       const queryResult: QueryResult<queryResultTraining> = await Database.query(
         `
-        SELECT * FROM ${tableName} 
+        SELECT * FROM ${TRAINING_TABLENAME} 
         INNER JOIN training_exercise ON training.tr_id = training_exercise.training_id 
         INNER JOIN exercise ON training_exercise.exercise_id = exercise.ex_id
         INNER JOIN exercise_set ON exercise.ex_id = exercise_set.fk_ex_id 

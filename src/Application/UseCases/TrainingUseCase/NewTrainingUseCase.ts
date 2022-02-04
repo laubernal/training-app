@@ -48,4 +48,5 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
     return exercises;
   }
+
 }
