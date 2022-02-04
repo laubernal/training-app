@@ -10,7 +10,6 @@ import { TrainingsPgMapper } from '../../mappers/PostgresqlDbMappers/TrainingsPg
 import { Database } from './Database';
 import { PostgreRepository } from './PostgreRepository';
 
-
 export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Training> {
   protected mapper = new TrainingsPgMapper();
 
@@ -98,6 +97,22 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       //   console.log('exercise: ', exercise);
       // });
       // });
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async findExercise(value: string): Promise<any> {
+    try {
+      const found = await Database.query(
+        `SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE $1`,
+        [value]
+      );
+
+      if (found) {
+        return found.rows[0];
+      }
+      return undefined;
     } catch (error: any) {
       throw new Error(error.message);
     }

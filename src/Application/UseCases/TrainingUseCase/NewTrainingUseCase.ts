@@ -14,7 +14,7 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
   public async execute(newTraining: NewTrainingDto): Promise<Training> {
     try {
-      const exercises: Exercise[] = this.dtoToDomain(newTraining.exercise);
+      const exercises = await this.dtoToDomain(newTraining.exercise);
 
       const training: Training = Training.build(
         newTraining.date,
@@ -33,20 +33,24 @@ export class NewTrainingUseCase implements IUseCase<Training> {
     }
   }
 
-  private dtoToDomain(exercise: ExerciseDto[]): Exercise[] {
-    const exercises = exercise.map((exercise: ExerciseDto): Exercise => {
-      const sets = exercise.sets.map((set: SetDto): Set => {
-        return Set.build(set.reps, set.weight, set.setsCount);
-      });
+  private async dtoToDomain(exercise: ExerciseDto[]): Promise<Exercise[]> {
+    const exercises = await Promise.all(
+      exercise.map(async (exercise: ExerciseDto): Promise<Exercise> => {
+        const sets = exercise.sets.map((set: SetDto): Set => {
+          return Set.build(set.reps, set.weight, set.setsCount);
+        });
 
-      const categoryName = Category.build(exercise.categoryName);
+        const categoryName = Category.build(exercise.categoryName);
 
-      const exerciseName = new ExerciseName(exercise.exerciseName);
+        const exerciseName = new ExerciseName(exercise.exerciseName);
 
-      return Exercise.build(categoryName, exerciseName, sets);
-    });
+        const exerciseFound = await this.trainingPgRepository.findExercise(exerciseName.value);
+        console.log('exerciseFound: ', exerciseFound);
+
+        return Exercise.build(categoryName, exerciseName, sets);
+      })
+    );
 
     return exercises;
   }
-
 }
