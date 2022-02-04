@@ -7,6 +7,7 @@ import { ITrainingPgRepository } from '../../../Infrastructure/interfaces/Postgr
 import { ExerciseDto } from '../../Dto/ExerciseDto';
 import { SetDto } from '../../Dto/SetDto';
 import { Category } from '../../../Domain/entities/Category';
+import { ExerciseName } from '../../../Domain/vo/ExerciseName';
 
 export class NewTrainingUseCase implements IUseCase<Training> {
   constructor(private trainingPgRepository: ITrainingPgRepository) {}
@@ -40,7 +41,9 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
       const categoryName = Category.build(exercise.categoryName);
 
-      return Exercise.build(categoryName, exercise.exerciseName, sets);
+      const exerciseName = new ExerciseName(exercise.exerciseName);
+
+      return Exercise.build(categoryName, exerciseName, sets);
     });
 
     return exercises;

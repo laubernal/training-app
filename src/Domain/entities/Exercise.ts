@@ -1,16 +1,17 @@
+import { ExerciseName } from '../vo/ExerciseName';
 import { Id } from '../vo/Id';
 import { Category } from './Category';
 import { Set } from './Set';
 
 export class Exercise {
-  public static build(category: Category, exerciseName: string, sets: Set[]): Exercise {
+  public static build(category: Category, exerciseName: ExerciseName, sets: Set[]): Exercise {
     return new Exercise(Id.generate(), category, exerciseName, sets);
   }
 
   constructor(
     private _id: string,
     private _category: Category,
-    private _exerciseName: string,
+    private _exerciseName: ExerciseName,
     private _sets: Set[]
   ) {}
 
@@ -22,7 +23,7 @@ export class Exercise {
     return this._category;
   }
 
-  public get exerciseName(): string {
+  public get exerciseName(): ExerciseName {
     return this._exerciseName;
   }
 
