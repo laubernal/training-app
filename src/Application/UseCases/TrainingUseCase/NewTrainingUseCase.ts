@@ -44,9 +44,18 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
         const exerciseName = new ExerciseName(exercise.exerciseName);
 
+        // Check if the exercise already exists
         const exerciseFound = await this.trainingPgRepository.findExercise(exerciseName.value);
-        console.log('exerciseFound: ', exerciseFound);
 
+        // If the exercise exists build the Exercise with the id and name of the exercise found
+        if (exerciseFound) {
+          const { ex_id, ex_name } = exerciseFound;
+          console.log('exerciseFound: ', ex_id, ex_name);
+
+          return Exercise.build(categoryName, ex_name, sets);
+        }
+
+        // If not found, build the Exercise from scratch
         return Exercise.build(categoryName, exerciseName, sets);
       })
     );

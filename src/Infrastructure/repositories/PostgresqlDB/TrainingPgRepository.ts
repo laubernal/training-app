@@ -102,7 +102,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     }
   }
 
-  public async findExercise(value: string): Promise<any> {
+  public async findExercise(value: string): Promise<any | undefined> {
     try {
       const found = await Database.query(
         `SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE $1`,
