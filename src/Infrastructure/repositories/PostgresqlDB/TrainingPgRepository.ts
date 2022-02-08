@@ -1,9 +1,8 @@
 import { QueryResult } from 'pg';
 
 import { TRAINING_TABLENAME } from '../../../constants';
-import { Exercise } from '../../../Domain/entities/Exercise';
-import { Set } from '../../../Domain/entities/Set';
 import { Training } from '../../../Domain/entities/Training';
+import { Id } from '../../../Domain/vo/Id';
 import { queryResultTraining } from '../../../types';
 import { TrainingPgModel } from '../../dataModel/PostgresqlDbModels/TrainingPgModel';
 import { TrainingsPgMapper } from '../../mappers/PostgresqlDbMappers/TrainingsPgMapper';
@@ -22,9 +21,9 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
   // 	1.2. If it does exist, throw new error  - Training already exists
 
   // 2. Loop the exercises[] and keep the exercises id (to do step 4)
-  // 	2.1. Check if the category already exists [CHANGE HOW THE ID OF THE CATEGROY IS GENERATED IN THE ENTITY]
+  // 	2.1. Check if the category already exists
   // 		2.1.1. If it does not exist, save the category
-  // 	2.2. Check if the exercise already exists [CHANGE HOW THE ID OF THE CATEGROY IS GENERATED IN THE ENTITY]
+  // 	2.2. Check if the exercise already exists
   // 		2.2.1. If it does not exist, save the exercise
   // 	2.3. Loop the sets[]
   // 		2.3.1. Save each set
@@ -52,42 +51,54 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       // If training does not exist, check if category already exists, if not insert it
       // SELECT * FROM category WHERE cat_id = category.id
 
-      // newTraining.exercises.map(exercise => {
-      const categories = newTraining.exercises.map(exercise => {
-        return exercise.category;
-      });
-      console.log('categories: ', categories);
+      const exercisesId = newTraining.exercises.map(async exercise => {
+        const categoryFound = await this.findCategory(exercise.category.categoryName);
 
-      for (const category of categories) {
-        const categoryExists = await this.checkIfExists('category', 'cat_id', category.id);
-        console.log('category exists: ', categoryExists);
-
-        if (!categoryExists) {
-          // If does not exist: INSERT INTO category (cat_id, cat_name) VALUES [...]
-          await this.saveCategory(category.id, category.categoryName);
+        if (!categoryFound) {
+          await this.saveCategory(exercise.category.id, exercise.category.categoryName);
         }
-      }
-      // Return category id (both cases)
 
-      // Check if exercise already exists, if not insert it (loop to insert all exercises that does not exist)
-      // SELECT * FROM exercise WHERE ex_id = exercise.id
-      const exerciseExists = await this.checkIfExists('exercise', 'ex_id', '');
-      if (!exerciseExists) {
-        // If does not exist: INSERT INTO exercise (ex_id, ex_name, fk_cat_id) VALUES [...]
-      }
-      // Return exercise id (both cases)
+        await this.saveCategory(categoryFound.cat_id, categoryFound.cat_name);
 
-      // Loop the sets array
-      // Insert all the sets
-      // INSERT INTO exercise_set ( set_id, set_count, set_reps, set_weight, fk_ex_id) VALUES [...]
+        // Check if exercise already exists, if not insert it (loop to insert all exercises that does not exist)
+        // SELECT * FROM exercise WHERE ex_id = exercise.id
+        const exerciseFound = await this.findExercise(exercise.exerciseName);
+        // const exerciseExists = await this.checkIfExists('exercise', 'ex_id', '');
+        if (!exerciseFound) {
+          // If does not exist: INSERT INTO exercise (ex_id, ex_name, fk_cat_id) VALUES [...]
+          await this.saveExercise(exercise.id, exercise.exerciseName);
+        }
 
-      // Insert training [For now the fk_us_id will be hardcoded]
+        await this.saveExercise(exerciseFound.ex_id, exerciseFound.ex_name);
+        // Return exercise id (both cases)
+
+        // Loop the sets array
+        exercise.sets.map(async set => {
+          await this.saveSet(set.id, set.setCount, set.reps, set.weight, exercise.id);
+        });
+
+        return exercise.id;
+      });
+
+      await this.saveTraining(
+        newTraining.id,
+        newTraining.date,
+        newTraining.note,
+        newTraining.userId,
+        newTraining.title
+      );
+      // Insert training
       // INSERT INTO ${tablename} (tr_id, tr_date, tr_note, fk_us_id, tr_title) VALUES [...]
       // Return training id
 
+      // Loop exercisesId[] to save the relation with the training
+
+      // Create a unique id for the tr_ex_id
+      exercisesId.map(async exerciseId => {
+        await this.saveTrainingExerciseRelation(Id.generate(), newTraining.id, await exerciseId);
+      });
       // Insert relation between training & exercise
       // INSERT INTO training_exercise (tr_ex_id, training_id, exercise_id) VALUES [...]
-      // Create a unique id for the tr_ex_id
 
       // console.log('training: ', training);
       // const exercises = training.exercises.map((exercise: Exercise) => {
@@ -96,13 +107,12 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       //   });
       //   console.log('exercise: ', exercise);
       // });
-      // });
     } catch (error: any) {
       throw new Error(error.message);
     }
   }
 
-  public async findExercise(value: string): Promise<any | undefined> {
+  private async findExercise(value: string): Promise<any | undefined> {
     try {
       const found = await Database.query(
         `SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE $1`,
@@ -112,21 +122,25 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       if (found) {
         return found.rows[0];
       }
+
       return undefined;
     } catch (error: any) {
       throw new Error(error.message);
     }
   }
 
-  private async checkIfExists(table: string, column: string, value: string): Promise<boolean> {
+  private async findCategory(value: string): Promise<any | undefined> {
     try {
-      const exists = await Database.query(`SELECT * FROM ${table} WHERE ${column}='$1'`, [value]);
+      const found = await Database.query(
+        `SELECT cat_id, cat_name FROM categories WHERE cat_name LIKE $1`,
+        [value]
+      );
 
-      if (exists) {
-        return true;
+      if (found) {
+        return found.rows[0];
       }
 
-      return false;
+      return undefined;
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -146,6 +160,49 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     }
   }
 
+  private async saveTrainingExerciseRelation(
+    trainingExerciseId: string,
+    trainingId: string,
+    exerciseId: string
+  ): Promise<void> {
+    try {
+      await Database.query(
+        `INSERT INTO training_exercise (tr_ex_id, training_id, exercise_id) VALUES $1, $2, $3`,
+        [trainingExerciseId, trainingId, exerciseId]
+      );
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  private async saveTraining(
+    trainingId: string,
+    trainingDate: string,
+    trainingNote: string,
+    trainingTitle: string,
+    userId: string
+  ): Promise<void> {
+    try {
+      await Database.query(
+        `INTO ${TRAINING_TABLENAME} (tr_id, tr_date, tr_note, fk_us_id, tr_title) VALUES $1, $2, $3, $4, $5`,
+        [trainingId, trainingDate, trainingNote, userId, trainingTitle]
+      );
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  private async saveExercise(exerciseId: string, exerciseName: string): Promise<void> {
+    try {
+      await Database.query(`INSERT INTO exercise (ex_id, ex_name) VALUES $1 $2`, [
+        exerciseId,
+        exerciseName,
+      ]);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
   private async saveCategory(categoryId: string, categoryName: string): Promise<void> {
     try {
       const queryResult = await Database.query(
@@ -154,6 +211,25 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       );
 
       console.log('query result save category: ', queryResult.rows[0]);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  private async saveSet(
+    setId: string,
+    setCount: number,
+    setReps: number,
+    setWeight: number,
+    exerciseId: string
+  ): Promise<void> {
+    try {
+      await Database.query(
+        `INSERT INTO exercise_set (set_id, set_count, set_reps, set_weight, fk_ex_id) VALUES $1, $2, $3, $4, $5`,
+        [setId, setCount, setReps, setWeight, exerciseId]
+      );
+
+      console.log('Set save successfully');
     } catch (error: any) {
       throw new Error(error.message);
     }
