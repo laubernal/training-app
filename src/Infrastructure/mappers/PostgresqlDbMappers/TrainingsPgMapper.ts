@@ -141,8 +141,6 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
   }
 
   public toData(training: Training): TrainingPgModel {
-    console.log('to data mapper');
-
     const exercises = training.exercises.map((exerciseMap: any) => {
       const sets = exerciseMap.sets.map((set: any) => {
         return new SetsPgModel(set.id, set.reps, set.weight, set.setsCount);
