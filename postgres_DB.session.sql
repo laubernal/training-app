@@ -8,7 +8,20 @@
 --   set_count ASC
 -- WHERE $ { column } = $1 
 
-SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE 'Sentadilla';
+-- DELETE FROM category;
+-- DELETE FROM exercise;
+-- DELETE FROM exercise_set;
+-- DELETE FROM training;
+-- DELETE FROM training_exercise;
+
+-- DELETE FROM exercise_set WHERE set_id = 'd45b8fbe-1f15-45ee-97c2-fea9515e32d9';
+-- DELETE FROM exercise_set WHERE set_id = 'b6248eac-baff-4484-add7-ece6e4d51454';
+-- DELETE FROM exercise_set WHERE set_id = '91128bb5-009b-4005-babf-250b7af79a39';
+-- DELETE FROM exercise_set WHERE set_id = '0aa30962-d389-4a71-9f09-e5944eabc60c';
+-- DELETE FROM exercise_set WHERE set_id = '104d95b1-44ca-4f4a-8613-4562ecabebbf';
+-- DELETE FROM exercise_set WHERE set_id = '77a2163b-87f8-4dbb-bf6b-e2a95e9b7499';
+
+-- SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE 'Sentadilla';
 
 -- INSERT INTO category (cat_id, cat_name)
 --   VALUES ('3', 'Espalda');
@@ -32,7 +45,7 @@ SELECT ex_id, ex_name FROM exercise WHERE ex_name LIKE 'Sentadilla';
 --       set_weight,
 --       fk_ex_id
 --     )
---   VALUES ('8', 2, 8, 0, '4');
+--   VALUES ('9', 3, 8, 2.5, '4');
 
 --   INSERT INTO training (tr_id, tr_date, tr_note, fk_us_id, tr_title)
 --   VALUES (

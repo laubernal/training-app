@@ -143,7 +143,7 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
   public toData(training: Training): TrainingPgModel {
     const exercises = training.exercises.map((exerciseMap: any) => {
       const sets = exerciseMap.sets.map((set: any) => {
-        return new SetsPgModel(set.id, set.reps, set.weight, set.setsCount);
+        return new SetsPgModel(set.id, set.setsCount, set.reps, set.weight);
       });
 
       const category = new CategoryPgModel(
@@ -151,7 +151,12 @@ export class TrainingsPgMapper implements IMapper<TrainingPgModel, Training> {
         exerciseMap.category.categoryName
       );
 
-      return new ExercisesPgModel(exerciseMap.id, exerciseMap.exerciseName, sets, category);
+      return new ExercisesPgModel(
+        exerciseMap.id,
+        exerciseMap.exerciseName.exerciseName,
+        sets,
+        category
+      );
     });
 
     return new TrainingPgModel(
