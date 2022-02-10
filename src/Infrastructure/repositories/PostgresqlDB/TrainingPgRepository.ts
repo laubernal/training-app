@@ -84,7 +84,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
         await this.saveTrainingExerciseRelation(Id.generate(), newTraining.id, exerciseId);
       }
     } catch (error: any) {
-      throw new Error(error.message);
+      throw new Error(`TrainingPgRepository - Save error ${error.message}`);
     }
   }
 
@@ -101,7 +101,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
 
       return found.rows[0];
     } catch (error: any) {
-      throw new Error(`Find exercise error ------------------ ${error.message}`);
+      throw new Error(`TrainingPgRepository - Find exercise error ${error.message}`);
     }
   }
 
@@ -118,7 +118,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
 
       return found.rows[0];
     } catch (error: any) {
-      throw new Error(`Find category error ------------------ ${error.message}`);
+      throw new Error(`TrainingPgRepository - Find category error ${error.message}`);
     }
   }
 
@@ -134,7 +134,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       );
     } catch (error: any) {
       throw new Error(
-        `Save training exercise relation error ----------------------- ${error.message}`
+        `TrainingPgRepository - Save training exercise relation error ${error.message}`
       );
     }
   }
@@ -152,7 +152,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
         [trainingId, trainingDate, trainingNote, userId, trainingTitle]
       );
     } catch (error: any) {
-      throw new Error(`Save training error ------------------ ${error.message}`);
+      throw new Error(`TrainingPgRepository - Save training error ${error.message}`);
     }
   }
 
@@ -168,7 +168,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
         categoryId,
       ]);
     } catch (error: any) {
-      throw new Error(`Save exercise error ------------------- ${error.message}`);
+      throw new Error(`TrainingPgRepository - Save exercise error ${error.message}`);
     }
   }
 
@@ -179,7 +179,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
         categoryName,
       ]);
     } catch (error: any) {
-      throw new Error(`Save category error ------------------ ${error.message}`);
+      throw new Error(`TrainingPgRepository - Save category error ${error.message}`);
     }
   }
 
@@ -196,7 +196,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
         [setId, setCount, setReps, setWeight, exerciseId]
       );
     } catch (error: any) {
-      throw new Error(`Save set error ------------------ ${error.message}`);
+      throw new Error(`TrainingPgRepository - Save set error ${error.message}`);
     }
   }
 

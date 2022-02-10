@@ -44,7 +44,6 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
         const exerciseName = new ExerciseName(exercise.exerciseName);
 
-        // If not found, build the Exercise from scratch
         return Exercise.build(categoryName, exerciseName, sets);
       })
     );
