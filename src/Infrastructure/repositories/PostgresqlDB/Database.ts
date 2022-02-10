@@ -20,7 +20,6 @@ export class Database {
 
     try {
       await pool.connect();
-      // console.log(query, values);
 
       return await pool.query(query, values);
     } catch (error: any) {

@@ -8,11 +8,11 @@
 --   set_count ASC
 -- WHERE $ { column } = $1 
 
--- DELETE FROM category;
--- DELETE FROM exercise;
--- DELETE FROM exercise_set;
--- DELETE FROM training;
--- DELETE FROM training_exercise;
+DELETE FROM category;
+DELETE FROM exercise;
+DELETE FROM exercise_set;
+DELETE FROM training;
+DELETE FROM training_exercise;
 
 -- DELETE FROM exercise_set WHERE set_id = 'd45b8fbe-1f15-45ee-97c2-fea9515e32d9';
 -- DELETE FROM exercise_set WHERE set_id = 'b6248eac-baff-4484-add7-ece6e4d51454';

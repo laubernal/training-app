@@ -20,3 +20,14 @@ export type queryResultTraining = {
   cat_id: string;
   cat_name: string;
 };
+
+export type queryResultExercise = {
+  ex_id: string;
+  ex_name: string;
+  fk_cat_id: string;
+}
+
+export type queryResultCategory = {
+  cat_id: string;
+  cat_name: string;
+}
