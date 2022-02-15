@@ -39,12 +39,11 @@ export class NewTrainingUseCase implements IUseCase<Training> {
         const sets = exercise.sets.map((set: SetDto): Set => {
           return Set.build(set.reps, set.weight, set.setsCount);
         });
-
-        const categoryName = Category.build(exercise.categoryName);
+        const category = new Category(exercise.category.id, exercise.category.categoryName);
 
         const exerciseName = new ExerciseName(exercise.exerciseName);
 
-        return Exercise.build(categoryName, exerciseName, sets);
+        return Exercise.build(category, exerciseName, sets);
       })
     );
 

@@ -21,9 +21,7 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
 
   // 2. Loop the exercises[] and keep the exercises id (to do step 4)
 
-  // 	2.1. Check if the category already exists - findCategory()
-  // 		2.1.1. If it does not exist, save the category and save the categoryId - saveCategory()
-  //    2.1.2. If it exists, save the categoryId
+  // 	2.1. Keep the categoryId from the front to save the exercise
 
   // 	2.2. Check if the exercise already exists - findExercise()
   // 		2.2.1. If it does not exist, save the exercise and save the exerciseId - saveExercise()

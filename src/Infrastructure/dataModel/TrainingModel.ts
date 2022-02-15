@@ -6,4 +6,5 @@ export class TrainingModel {
   public title!: string;
   public note!: string;
   public exercises!: ExercisesModel[];
+  public userId!: string;
 }
