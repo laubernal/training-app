@@ -11,3 +11,4 @@ export const SYMBOL_REGEX = /^[-#!$@%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
 
 export const USERS_TABLENAME = 'users';
 export const TRAINING_TABLENAME = 'training';
+export const CATEGORY_TABLENAME = 'category'
