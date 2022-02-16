@@ -8,11 +8,11 @@ export class SignOutController {
     try {
       req.session = null;
       res.status(200).send('You are logged out');
-    } catch (err: any) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error);
       res.send({
         msg: 'Error occurred',
-        error: err.message,
+        error: error.message,
       });
     }
   }

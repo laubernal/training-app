@@ -32,11 +32,11 @@ export class SignInController {
       };
 
       res.status(201).send('Logged in');
-    } catch (err: any) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error);
       res.send({
         msg: 'Error occurred',
-        error: err.message,
+        error: error.message,
       });
     }
   }

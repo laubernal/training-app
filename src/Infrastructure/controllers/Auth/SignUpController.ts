@@ -36,11 +36,11 @@ export class SignUpController {
       };
 
       res.status(201).send('User created');
-    } catch (err: any) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error);
       res.send({
         msg: 'Error occured',
-        error: err.message,
+        error: error.message,
       });
     }
   }

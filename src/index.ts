@@ -6,6 +6,7 @@ import { AppRouter } from './Infrastructure/controllers/AppRouter';
 
 import './Infrastructure/controllers/Auth';
 import './Infrastructure/controllers/Trainings';
+import './Infrastructure/controllers/Categories';
 
 const app: Application = express();
 const port = process.env.PORT || 5000;
