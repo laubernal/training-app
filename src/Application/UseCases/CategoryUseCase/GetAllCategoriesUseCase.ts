@@ -8,6 +8,7 @@ export class GetAllCategoriesUseCase implements IUseCase<Category> {
   public async execute(value: string): Promise<Category[] | undefined> {
     try {
       const categories: Category[] = await this.categoryPgRepository.findAll();
+      
       return categories;
     } catch (error: any) {
       throw new Error(error.message);

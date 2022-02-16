@@ -1,5 +1,7 @@
+import { QueryResult } from 'pg';
 import { CATEGORY_TABLENAME } from '../../../constants';
 import { Category } from '../../../Domain/entities/Category';
+import { queryResultCategory } from '../../../types';
 import { CategoryPgModel } from '../../dataModel/PostgresqlDbModels/CategoryPgModel';
 import { CategoryPgMapper } from '../../mappers/PostgresqlDbMappers/CategoryPgMapper';
 import { Database } from './Database';
@@ -14,7 +16,10 @@ export class CategoryPgRepository extends PostgreRepository<CategoryPgModel, Cat
 
   public async findAll(): Promise<Category[] | undefined> {
     try {
-      const queryResult = await Database.query(`SELECT * FROM ${CATEGORY_TABLENAME}`, []);
+      const queryResult: QueryResult<queryResultCategory> = await Database.query(
+        `SELECT * FROM ${CATEGORY_TABLENAME}`,
+        []
+      );
 
       if (queryResult.rows.length === 0) {
         return undefined;
