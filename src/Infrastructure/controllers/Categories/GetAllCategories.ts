@@ -10,7 +10,7 @@ export class GetAllCategories {
   @use(requireAuth)
   public async getAllCategories(req: Request, res: Response): Promise<void> {
     try {
-      const categories = await new GetAllCategoriesUseCase(new CategoryPgRepository()).execute('');
+      const categories = await new GetAllCategoriesUseCase(new CategoryPgRepository()).execute();
 
       res.send(categories);
     } catch (error: any) {

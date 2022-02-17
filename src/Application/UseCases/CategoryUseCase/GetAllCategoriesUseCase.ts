@@ -5,7 +5,7 @@ import { IUseCase } from '../IUseCase';
 export class GetAllCategoriesUseCase implements IUseCase<Category> {
   constructor(private categoryPgRepository: ICategoryPgRepository) {}
 
-  public async execute(value: string): Promise<Category[] | undefined> {
+  public async execute(): Promise<Category[] | undefined> {
     try {
       const categories: Category[] = await this.categoryPgRepository.findAll();
       
