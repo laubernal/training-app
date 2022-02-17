@@ -8,7 +8,6 @@ import { bodyValidator, Controller, get, use } from '../decorators';
 export class GetAllCategories {
   @get('/categories')
   @use(requireAuth)
-  @bodyValidator()
   public async getAllCategories(req: Request, res: Response): Promise<void> {
     try {
       const categories = await new GetAllCategoriesUseCase(new CategoryPgRepository()).execute('');
