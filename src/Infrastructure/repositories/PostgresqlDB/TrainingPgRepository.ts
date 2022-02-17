@@ -3,7 +3,7 @@ import { QueryResult } from 'pg';
 import { TRAINING_TABLENAME } from '../../../constants';
 import { Training } from '../../../Domain/entities/Training';
 import { Id } from '../../../Domain/vo/Id';
-import { queryResultCategory, queryResultExercise, queryResultTraining } from '../../../types';
+import { queryResultExercise, queryResultTraining } from '../../../types';
 import { TrainingPgModel } from '../../dataModel/PostgresqlDbModels/TrainingPgModel';
 import { TrainingsPgMapper } from '../../mappers/PostgresqlDbMappers/TrainingsPgMapper';
 import { Database } from './Database';
@@ -16,26 +16,6 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
     super(TRAINING_TABLENAME);
   }
 
-  // SAVE STEPS
-  //   1. Map the training to data
-
-  // 2. Loop the exercises[] and keep the exercises id (to do step 4)
-
-  // 	2.1. Keep the categoryId from the front to save the exercise
-
-  // 	2.2. Check if the exercise already exists - findExercise()
-  // 		2.2.1. If it does not exist, save the exercise and save the exerciseId - saveExercise()
-  //    2.2.2. If it exists, save the exerciseId
-
-  // 	2.3. Loop the sets[]
-  // 		2.3.1. Save each set - saveSet()
-
-  //  2.4. Return the exercise id
-
-  // 3. Save the training
-
-  // 4. Save relation of the training with the exercises id from step 2
-
   public async save(training: Training): Promise<void> {
     try {
       const newTraining = this.mapper.toData(training);
@@ -43,21 +23,11 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       const exercisesId: string[] = [];
 
       for (const exercise of newTraining.exercises) {
-        const categoryFound = await this.findCategory(exercise.category.categoryName);
-        let categoryId = '';
-
-        if (!categoryFound) {
-          await this.saveCategory(exercise.category.id, exercise.category.categoryName);
-          categoryId = exercise.category.id;
-        } else {
-          categoryId = categoryFound.cat_id;
-        }
-
         const exerciseFound = await this.findExercise(exercise.exerciseName);
         let exerciseId = '';
 
         if (!exerciseFound) {
-          await this.saveExercise(exercise.id, exercise.exerciseName, categoryId);
+          await this.saveExercise(exercise.id, exercise.exerciseName, exercise.category.id);
           exerciseId = exercise.id;
         } else {
           exerciseId = exerciseFound.ex_id;
@@ -100,23 +70,6 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       return found.rows[0];
     } catch (error: any) {
       throw new Error(`TrainingPgRepository - Find exercise error ${error.message}`);
-    }
-  }
-
-  private async findCategory(value: string): Promise<queryResultCategory | undefined> {
-    try {
-      const found = await Database.query(
-        `SELECT cat_id, cat_name FROM category WHERE cat_name LIKE $1`,
-        [value]
-      );
-
-      if (found.rows.length === 0) {
-        return undefined;
-      }
-
-      return found.rows[0];
-    } catch (error: any) {
-      throw new Error(`TrainingPgRepository - Find category error ${error.message}`);
     }
   }
 
@@ -167,17 +120,6 @@ export class TrainingPgRepository extends PostgreRepository<TrainingPgModel, Tra
       ]);
     } catch (error: any) {
       throw new Error(`TrainingPgRepository - Save exercise error ${error.message}`);
-    }
-  }
-
-  private async saveCategory(categoryId: string, categoryName: string): Promise<void> {
-    try {
-      await Database.query(`INSERT INTO category (cat_id, cat_name) VALUES ($1, $2)`, [
-        categoryId,
-        categoryName,
-      ]);
-    } catch (error: any) {
-      throw new Error(`TrainingPgRepository - Save category error ${error.message}`);
     }
   }
 

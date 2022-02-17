@@ -14,6 +14,17 @@ export class CategoryPgRepository extends PostgreRepository<CategoryPgModel, Cat
     super(CATEGORY_TABLENAME);
   }
 
+  public async save(category: Category): Promise<void> {
+    try {
+      await Database.query(`INSERT INTO category (cat_id, cat_name) VALUES ($1, $2)`, [
+        category.id,
+        category.categoryName,
+      ]);
+    } catch (error: any) {
+      throw new Error(`TrainingPgRepository - Save category error ${error.message}`);
+    }
+  }
+
   public async findAll(): Promise<Category[] | undefined> {
     try {
       const queryResult: QueryResult<queryResultCategory> = await Database.query(
