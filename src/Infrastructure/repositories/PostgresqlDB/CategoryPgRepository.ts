@@ -16,12 +16,39 @@ export class CategoryPgRepository extends PostgreRepository<CategoryPgModel, Cat
 
   public async save(category: Category): Promise<void> {
     try {
-      await Database.query(`INSERT INTO category (cat_id, cat_name) VALUES ($1, $2)`, [
+      const categoryFound = await this.findOne(category.categoryName);
+
+      if (categoryFound) {
+        throw new Error(`The category you're trying to add already exists`);
+      }
+
+      await Database.query(`INSERT INTO ${CATEGORY_TABLENAME} (cat_id, cat_name) VALUES ($1, $2)`, [
         category.id,
         category.categoryName,
       ]);
     } catch (error: any) {
-      throw new Error(`TrainingPgRepository - Save category error ${error.message}`);
+      throw new Error(`CategoryPgRepository - Save error ${error.message}`);
+    }
+  }
+
+  private async findOne(categoryName: string): Promise<Category | undefined> {
+    try {
+      const categoryNameToCompare = '%'.concat(categoryName, '%');
+
+      const categoryFound = await Database.query(
+        `SELECT * FROM ${CATEGORY_TABLENAME} WHERE cat_name LIKE $1`,
+        [categoryNameToCompare]
+      );
+
+      if (categoryFound.rows.length === 0) {
+        console.log('return undefined');
+
+        return undefined;
+      }
+
+      return categoryFound.rows[0];
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   }
 

@@ -13,8 +13,11 @@ export class NewCategory {
   public async newCategory(req: Request, res: Response): Promise<void> {
     try {
       const { categoryName } = req.body;
-
-      const newCategory = new NewCategoryUseCase(new CategoryPgRepository()).execute(categoryName);
+      
+      const newCategory = await new NewCategoryUseCase(new CategoryPgRepository()).execute(
+        categoryName
+      );
+      console.log(`new category controller: ${newCategory}`);
 
       res.send(newCategory);
     } catch (error: any) {

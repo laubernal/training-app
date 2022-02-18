@@ -1,7 +1,7 @@
 import { Id } from '../vo/Id';
 
 export class Category {
-  public static build(categoryName: string) {
+  public static build(categoryName: string): Category {
     return new Category(Id.generate(), categoryName);
   }
 
