@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 
 import { DATA_DIR } from '../../constants';
-import { IReader } from '../interfaces/IReader';
+import { IReader } from '../../Domain/interfaces/IReader';
 
 export class JsonFileReader<T> implements IReader<T> {
   public data!: T[];

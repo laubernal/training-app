@@ -3,7 +3,7 @@ import { User } from '../../../Domain/entities/User';
 import { Password } from '../../../Domain/vo/Password';
 import { Email } from '../../../Domain/vo/Email';
 import { Name } from '../../../Domain/vo/Name';
-import { IUserPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/IUserPgRepository';
+import { IUserPgRepository } from '../../../Domain/interfaces/PostgresqlDbInterfaces/IUserPgRepository';
 
 export class SignUpUseCase implements IUseCase<string> {
   constructor(private userPgRepository: IUserPgRepository) {}

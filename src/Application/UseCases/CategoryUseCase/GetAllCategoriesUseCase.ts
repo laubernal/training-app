@@ -1,5 +1,5 @@
 import { Category } from '../../../Domain/entities/Category';
-import { ICategoryPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/ICategoryPgRepository';
+import { ICategoryPgRepository } from '../../../Domain/interfaces/PostgresqlDbInterfaces/ICategoryPgRepository';
 import { IUseCase } from '../IUseCase';
 
 export class GetAllCategoriesUseCase implements IUseCase<Category> {

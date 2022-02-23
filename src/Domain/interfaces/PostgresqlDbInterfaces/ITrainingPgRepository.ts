@@ -1,4 +1,4 @@
-import { Training } from '../../../Domain/entities/Training';
+import { Training } from '../../entities/Training';
 import { IPostgreRepository } from './IPostgreRepository';
 
 export interface ITrainingPgRepository extends IPostgreRepository<Training> {

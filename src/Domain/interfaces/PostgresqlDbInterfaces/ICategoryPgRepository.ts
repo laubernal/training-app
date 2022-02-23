@@ -1,4 +1,4 @@
-import { Category } from '../../../Domain/entities/Category';
+import { Category } from '../../entities/Category';
 import { IPostgreRepository } from './IPostgreRepository';
 
 export interface ICategoryPgRepository extends IPostgreRepository<Category> {

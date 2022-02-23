@@ -1,4 +1,4 @@
-import { User } from '../../../Domain/entities/User';
+import { User } from '../../entities/User';
 import { IPostgreRepository } from './IPostgreRepository';
 
 export interface IUserPgRepository extends IPostgreRepository<User> {

@@ -2,7 +2,7 @@ import { scryptSync } from 'crypto';
 
 import { IUseCase } from '../IUseCase';
 import { Email } from '../../../Domain/vo/Email';
-import { IUserPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/IUserPgRepository';
+import { IUserPgRepository } from '../../../Domain/interfaces/PostgresqlDbInterfaces/IUserPgRepository';
 
 export class SignInUseCase implements IUseCase<void> {
   constructor(private userPgRepository: IUserPgRepository) {}

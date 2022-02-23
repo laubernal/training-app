@@ -1,5 +1,5 @@
 import { Category } from '../../../Domain/entities/Category';
-import { ICategoryPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/ICategoryPgRepository';
+import { ICategoryPgRepository } from '../../../Domain/interfaces/PostgresqlDbInterfaces/ICategoryPgRepository';
 import { IUseCase } from '../IUseCase';
 
 export class NewCategoryUseCase implements IUseCase<Category> {
@@ -8,10 +8,8 @@ export class NewCategoryUseCase implements IUseCase<Category> {
   public async execute(categoryName: string): Promise<Category> {
     try {
       const category: Category = Category.build(categoryName);
-      console.log(`category in execute UC: ${category}`);
 
       await this.categoryPgRepository.save(category);
-      console.log(`new category use case: ${category}`);
 
       return category;
     } catch (error: any) {

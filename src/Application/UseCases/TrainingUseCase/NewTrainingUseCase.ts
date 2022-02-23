@@ -3,7 +3,7 @@ import { Set } from '../../../Domain/entities/Set';
 import { Training } from '../../../Domain/entities/Training';
 import { IUseCase } from '../IUseCase';
 import { NewTrainingDto } from '../../Dto/NewTrainingDto';
-import { ITrainingPgRepository } from '../../../Infrastructure/interfaces/PostgresqlDbInterfaces/ITrainingPgRepository';
+import { ITrainingPgRepository } from '../../../Domain/interfaces/PostgresqlDbInterfaces/ITrainingPgRepository';
 import { ExerciseDto } from '../../Dto/ExerciseDto';
 import { SetDto } from '../../Dto/SetDto';
 import { Category } from '../../../Domain/entities/Category';
@@ -24,7 +24,7 @@ export class NewTrainingUseCase implements IUseCase<Training> {
         newTraining.userId
       );
 
-      this.trainingPgRepository.save(training);
+      await this.trainingPgRepository.save(training);
 
       // Returning the new training is not correct, waiting for future correction!
       return training;
@@ -35,7 +35,7 @@ export class NewTrainingUseCase implements IUseCase<Training> {
 
   private async dtoToDomain(exercise: ExerciseDto[]): Promise<Exercise[]> {
     const exercises = await Promise.all(
-      exercise.map(async (exercise: ExerciseDto): Promise<Exercise> => {
+      exercise.map((exercise: ExerciseDto): Exercise => {
         const sets = exercise.sets.map((set: SetDto): Set => {
           return Set.build(set.reps, set.weight, set.setsCount);
         });
