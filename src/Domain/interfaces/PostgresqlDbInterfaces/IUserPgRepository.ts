@@ -2,5 +2,6 @@ import { User } from '../../entities/User';
 import { IPostgreRepository } from './IPostgreRepository';
 
 export interface IUserPgRepository extends IPostgreRepository<User> {
-  getId(email: string): Promise<any>;
+  save(user: User): Promise<void>;
+  getId(email: string): Promise<string>;
 }

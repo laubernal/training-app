@@ -31,7 +31,7 @@ export class SignInController {
         jwt: userJwt,
       };
 
-      res.status(201).send('Logged in');
+      res.status(201).send({ email, userJwt });
     } catch (error: any) {
       console.log(error);
       res.send({

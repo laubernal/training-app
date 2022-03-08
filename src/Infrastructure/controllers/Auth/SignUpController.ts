@@ -35,7 +35,7 @@ export class SignUpController {
         jwt: userJwt,
       };
 
-      res.status(201).send('User created');
+      res.status(201).send({email, userJwt});
     } catch (error: any) {
       console.log(error);
       res.send({

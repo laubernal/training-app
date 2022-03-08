@@ -10,6 +10,7 @@ export abstract class PostgreRepository<T, K extends ObjectDefinition> {
   public async save(item: K): Promise<void> {
     try {
       const newItem = this.mapper.toData(item);
+      console.log('new item', newItem);
 
       const columns = Object.keys(newItem);
 
