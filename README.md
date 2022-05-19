@@ -1,6 +1,6 @@
 # 🏋🏻‍♀️ Training app
 
-💡 React Application that allows you to keep track of your gym sessions so you can see your progression.  
+💡 Application that allows you to keep track of your gym sessions so you can see your progression.  
 
 
 
